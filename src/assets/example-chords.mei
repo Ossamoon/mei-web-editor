@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="https://music-encoding.org/schema/5.1/mei-basic.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<mei xmlns="http://www.music-encoding.org/ns/mei" meiversion="5.1+basic">
+  <meiHead>
+    <fileDesc>
+      <titleStmt>
+        <title>Chords and Multiple Voices</title>
+      </titleStmt>
+      <pubStmt />
+    </fileDesc>
+  </meiHead>
+  <music>
+    <body>
+      <mdiv>
+        <score>
+          <scoreDef>
+            <staffGrp>
+              <staffDef n="1" lines="5" clef.shape="G" clef.line="2" meter.count="4" meter.unit="4" keysig="0" />
+            </staffGrp>
+          </scoreDef>
+          <section>
+            <measure n="1" xml:id="m1">
+              <staff n="1">
+                <layer n="1">
+                  <chord xml:id="c1" dur="4" stem.dir="up">
+                    <note xml:id="n1" oct="4" pname="c" />
+                    <note xml:id="n2" oct="4" pname="e" />
+                    <note xml:id="n3" oct="4" pname="g" />
+                  </chord>
+                  <chord xml:id="c2" dur="4" stem.dir="up">
+                    <note xml:id="n4" oct="4" pname="d" />
+                    <note xml:id="n5" oct="4" pname="f" />
+                    <note xml:id="n6" oct="4" pname="a" />
+                  </chord>
+                  <chord xml:id="c3" dur="2" stem.dir="up">
+                    <note xml:id="n7" oct="4" pname="e" />
+                    <note xml:id="n8" oct="4" pname="g" />
+                    <note xml:id="n9" oct="4" pname="b" />
+                  </chord>
+                </layer>
+                <layer n="2">
+                  <note xml:id="n10" dur="2" oct="3" pname="c" stem.dir="down" />
+                  <note xml:id="n11" dur="2" oct="3" pname="e" stem.dir="down" />
+                </layer>
+              </staff>
+            </measure>
+            <measure n="2" xml:id="m2" right="end">
+              <staff n="1">
+                <layer n="1">
+                  <chord xml:id="c4" dur="1">
+                    <note xml:id="n12" oct="4" pname="c" />
+                    <note xml:id="n13" oct="4" pname="e" />
+                    <note xml:id="n14" oct="4" pname="g" />
+                    <note xml:id="n15" oct="5" pname="c" />
+                  </chord>
+                </layer>
+              </staff>
+            </measure>
+          </section>
+        </score>
+      </mdiv>
+    </body>
+  </music>
+</mei>

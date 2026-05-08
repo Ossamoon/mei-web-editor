@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="https://music-encoding.org/schema/5.1/mei-basic.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<mei xmlns="http://www.music-encoding.org/ns/mei" meiversion="5.1+basic">
+  <meiHead>
+    <fileDesc>
+      <titleStmt>
+        <title>Piano (Grand Staff)</title>
+      </titleStmt>
+      <pubStmt />
+    </fileDesc>
+  </meiHead>
+  <music>
+    <body>
+      <mdiv>
+        <score>
+          <scoreDef>
+            <staffGrp symbol="brace" bar.thru="true">
+              <staffDef n="1" lines="5" clef.shape="G" clef.line="2" meter.count="3" meter.unit="4" keysig="1s" />
+              <staffDef n="2" lines="5" clef.shape="F" clef.line="4" meter.count="3" meter.unit="4" keysig="1s" />
+            </staffGrp>
+          </scoreDef>
+          <section>
+            <measure n="1" xml:id="m1">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="rn1" dur="4" oct="5" pname="d" />
+                  <note xml:id="rn2" dur="4" oct="4" pname="b" />
+                  <note xml:id="rn3" dur="4" oct="4" pname="a" />
+                </layer>
+              </staff>
+              <staff n="2">
+                <layer n="1">
+                  <note xml:id="ln1" dur="2" oct="3" pname="g" />
+                  <note xml:id="ln2" dur="4" oct="3" pname="f" accid="s" />
+                </layer>
+              </staff>
+            </measure>
+            <measure n="2" xml:id="m2">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="rn4" dur="2." oct="4" pname="g" />
+                </layer>
+              </staff>
+              <staff n="2">
+                <layer n="1">
+                  <note xml:id="ln3" dur="2." oct="3" pname="g" />
+                </layer>
+              </staff>
+            </measure>
+            <measure n="3" xml:id="m3">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="rn5" dur="4" oct="4" pname="a" />
+                  <note xml:id="rn6" dur="4" oct="4" pname="b" />
+                  <note xml:id="rn7" dur="4" oct="5" pname="c" />
+                </layer>
+              </staff>
+              <staff n="2">
+                <layer n="1">
+                  <note xml:id="ln4" dur="4" oct="3" pname="f" accid="s" />
+                  <note xml:id="ln5" dur="4" oct="3" pname="g" />
+                  <note xml:id="ln6" dur="4" oct="3" pname="a" />
+                </layer>
+              </staff>
+            </measure>
+            <measure n="4" xml:id="m4" right="end">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="rn8" dur="2." oct="4" pname="b" />
+                </layer>
+              </staff>
+              <staff n="2">
+                <layer n="1">
+                  <note xml:id="ln7" dur="2." oct="3" pname="g" />
+                </layer>
+              </staff>
+            </measure>
+          </section>
+        </score>
+      </mdiv>
+    </body>
+  </music>
+</mei>
