@@ -41,6 +41,18 @@ pnpm build
 
 The production build is output to `dist/`.
 
+## Testing
+
+```bash
+pnpm test          # Unit/component tests (Vitest)
+pnpm test:e2e      # E2E tests (Playwright, requires chromium)
+pnpm test:coverage # Coverage report
+```
+
+- Unit/component tests: Vitest + Testing Library (55 tests)
+- E2E tests: Playwright on Chromium (13 tests)
+- Test-first development: new features and bug fixes start with a failing test
+
 ## Deployment
 
 This project is configured for GitHub Pages via GitHub Actions. Push to the `main` branch to trigger automatic deployment.

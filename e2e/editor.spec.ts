@@ -79,8 +79,8 @@ test.describe("MEI Web Editor", () => {
   test("clicking in the score area works without error", async ({
     page,
   }) => {
-    // Click on the score panel area (the container with SVG)
-    const scorePanel = page.locator(".cursor-pointer").first();
+    // Click on the score panel container
+    const scorePanel = page.locator(".p-4").first();
     await scorePanel.click();
 
     // Editor should still be functional
@@ -93,5 +93,110 @@ test.describe("MEI Web Editor", () => {
     const download = await downloadPromise;
 
     expect(download.suggestedFilename()).toMatch(/\.mei$/);
+  });
+});
+
+test.describe("Score hover and highlight", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/");
+    await expect(page.locator("svg").first()).toBeVisible({ timeout: 15000 });
+  });
+
+  test("note hover adds score-hover class", async ({ page }) => {
+    // Find a note element in the SVG
+    const note = page.locator("svg g.note").first();
+    await expect(note).toBeAttached();
+
+    // Hover over the note
+    await note.hover({ force: true });
+
+    // Should have score-hover class
+    await expect(note).toHaveClass(/score-hover/);
+  });
+
+  test("note hover class is removed on mouseout", async ({ page }) => {
+    const note = page.locator("svg g.note").first();
+    await note.hover({ force: true });
+    await expect(note).toHaveClass(/score-hover/);
+
+    // Move mouse away from the score
+    await page.mouse.move(0, 0);
+    await page.waitForTimeout(100);
+
+    // score-hover should be removed
+    await expect(note).not.toHaveClass(/score-hover/);
+  });
+
+  test("measure hover creates overlay rect", async ({ page }) => {
+    // Trigger mouseover on a measure element via evaluate
+    const hasOverlay = await page.evaluate(() => {
+      const measure = document.querySelector("svg g.measure");
+      if (!measure) return false;
+
+      // Dispatch mouseover event
+      const event = new MouseEvent("mouseover", { bubbles: true });
+      measure.dispatchEvent(event);
+
+      // Check if overlay was created
+      return !!measure.querySelector(".measure-hover-overlay");
+    });
+
+    expect(hasOverlay).toBe(true);
+  });
+
+  test("measure overlay does not accumulate on repeated hover", async ({
+    page,
+  }) => {
+    const overlayCount = await page.evaluate(() => {
+      const measure = document.querySelector("svg g.measure");
+      if (!measure) return -1;
+
+      // Simulate hover in/out multiple times
+      for (let i = 0; i < 5; i++) {
+        measure.dispatchEvent(new MouseEvent("mouseover", { bubbles: true }));
+        measure.dispatchEvent(
+          new MouseEvent("mouseout", { bubbles: true, relatedTarget: document.body }),
+        );
+      }
+      // Hover back on
+      measure.dispatchEvent(new MouseEvent("mouseover", { bubbles: true }));
+
+      return measure.querySelectorAll(".measure-hover-overlay").length;
+    });
+
+    expect(overlayCount).toBe(1);
+  });
+
+  test("piano score measure overlay spans both staves", async ({ page }) => {
+    // Switch to piano example
+    page.on("dialog", (dialog) => dialog.accept());
+    await page.getByText(/Examples/).click();
+    await page.getByText("Piano (Grand Staff)").click();
+    await page.waitForTimeout(500);
+    await expect(page.locator("svg").first()).toBeVisible();
+
+    // Hover over a measure
+    const measure = page.locator("svg g.measure").first();
+    await measure.hover({ force: true });
+
+    // Overlay should exist
+    const overlay = measure.locator(".measure-hover-overlay");
+    await expect(overlay).toBeAttached();
+
+    // Get overlay height — it should span both staves (significantly taller than single staff)
+    const height = await overlay.getAttribute("height");
+    expect(Number(height)).toBeGreaterThan(1000); // Both staves ~1800 units apart
+  });
+
+  test("non-interactive SVG areas do not show pointer cursor", async ({
+    page,
+  }) => {
+    // Check cursor on the score container background (not on a note/measure)
+    const cursor = await page.evaluate(() => {
+      const container = document.querySelector(".p-4");
+      return container ? getComputedStyle(container).cursor : null;
+    });
+    // Container should not have pointer cursor
+    expect(cursor).not.toBe("pointer");
   });
 });

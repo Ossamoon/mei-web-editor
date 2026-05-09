@@ -62,10 +62,20 @@ e2e/
 
 ## Testing Strategy
 
+**テストファーストで開発する。** 新機能の追加やバグ修正を行う際は、まず期待する挙動をテストとして記述し、テストが失敗することを確認してから実装に入る。
+
 - **Unit tests** (`*.test.ts`): Pure logic (validate, findXmlId, examples)
 - **Component tests** (`*.test.tsx`): React components with Testing Library (StatusBar, Toolbar, ScorePreview)
 - **Hook tests**: Custom hooks with `renderHook` (useKeyboardShortcut, useDragAndDrop)
-- **E2E** (`e2e/`): Full browser flow with Playwright (initial render, editing, error states, file download, example selection)
+- **E2E** (`e2e/`): Full browser flow with Playwright (initial render, editing, error states, hover/highlight, file download, example selection)
+
+### テストの運用ルール
+
+- 機能追加時: 先にテストを書く → 失敗確認 → 実装 → パス確認
+- バグ修正時: バグを再現するテストを書く → 修正 → パス確認
+- リファクタリング時: 既存テストが全てパスすることを常に確認
+- UIの挙動変更時: E2Eテストに反映し、セレクタやアサーションが最新のDOM構造と一致していることを確認
+- `pnpm test --run && pnpm build` を実装の区切りごとに実行する
 
 ## Conventions
 
