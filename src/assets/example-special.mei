@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="https://music-encoding.org/schema/5.1/mei-basic.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<mei xmlns="http://www.music-encoding.org/ns/mei" meiversion="5.1+basic">
+  <meiHead>
+    <fileDesc>
+      <titleStmt>
+        <title>Tremolo, Harmony and Special Notation</title>
+      </titleStmt>
+      <pubStmt />
+    </fileDesc>
+  </meiHead>
+  <music>
+    <body>
+      <mdiv>
+        <score>
+          <scoreDef>
+            <staffGrp>
+              <staffDef n="1" lines="5" clef.shape="G" clef.line="2" meter.count="4" meter.unit="4" keysig="0" />
+            </staffGrp>
+          </scoreDef>
+          <section>
+            <!-- Measure 1: harm, ornam, bTrem -->
+            <measure n="1" xml:id="m1">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n1" dur="4" oct="4" pname="c" />
+                  <note xml:id="n2" dur="4" oct="4" pname="e" />
+                  <bTrem xml:id="bt1">
+                    <note xml:id="n3" dur="2" oct="4" pname="g" />
+                  </bTrem>
+                </layer>
+              </staff>
+              <harm xml:id="h1" startid="#n1" place="above">C</harm>
+              <harm xml:id="h2" startid="#n2" place="above">Am</harm>
+              <ornam xml:id="orn1" startid="#n2" place="above" />
+            </measure>
+            <!-- Measure 2: fTrem, bend -->
+            <measure n="2" xml:id="m2">
+              <staff n="1">
+                <layer n="1">
+                  <fTrem xml:id="ft1">
+                    <note xml:id="n4" dur="2" oct="4" pname="c" />
+                    <note xml:id="n5" dur="2" oct="4" pname="e" />
+                  </fTrem>
+                  <note xml:id="n6" dur="4" oct="4" pname="g" />
+                  <note xml:id="n7" dur="4" oct="4" pname="a" />
+                </layer>
+              </staff>
+              <harm xml:id="h3" startid="#n4" place="above">F</harm>
+              <bend xml:id="bd1" startid="#n6" endid="#n7" />
+            </measure>
+            <!-- Measure 3: harpPedal, beamSpan -->
+            <measure n="3" xml:id="m3">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n8" dur="8" oct="4" pname="c" />
+                  <note xml:id="n9" dur="8" oct="4" pname="d" />
+                  <note xml:id="n10" dur="8" oct="4" pname="e" />
+                  <note xml:id="n11" dur="8" oct="4" pname="f" />
+                  <note xml:id="n12" dur="4" oct="4" pname="g" />
+                  <note xml:id="n13" dur="4" oct="4" pname="a" />
+                </layer>
+              </staff>
+              <harpPedal xml:id="hped1" startid="#n8" c="s" d="f" e="n" f="s" g="f" a="n" b="n" />
+              <beamSpan xml:id="bs1" startid="#n8" endid="#n11" />
+            </measure>
+            <!-- Measure 4: tupletSpan, bracketSpan -->
+            <measure n="4" xml:id="m4" right="end">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n14" dur="4" oct="4" pname="c" />
+                  <note xml:id="n15" dur="4" oct="4" pname="d" />
+                  <note xml:id="n16" dur="4" oct="4" pname="e" />
+                  <note xml:id="n17" dur="4" oct="4" pname="c" />
+                </layer>
+              </staff>
+              <tupletSpan xml:id="ts1" startid="#n14" endid="#n16" num="3" numbase="2" />
+              <bracketSpan xml:id="bks1" startid="#n14" endid="#n16" func="coloration" />
+            </measure>
+          </section>
+        </score>
+      </mdiv>
+    </body>
+  </music>
+</mei>

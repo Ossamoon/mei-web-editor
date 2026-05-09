@@ -200,3 +200,80 @@ test.describe("Score hover and highlight", () => {
     expect(cursor).not.toBe("pointer");
   });
 });
+
+test.describe("Stroke-based element highlights", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/");
+    await expect(page.locator("svg").first()).toBeVisible({ timeout: 15000 });
+  });
+
+  /** Helper: select an example by name */
+  async function selectExample(page: import("@playwright/test").Page, name: string) {
+    page.on("dialog", (dialog) => dialog.accept());
+    await page.getByText(/Examples/).click();
+    await page.getByText(name).click();
+    await page.waitForTimeout(500);
+    await expect(page.locator("svg").first()).toBeVisible();
+  }
+
+  /** Helper: hover an element and return computed fill of its first child */
+  async function getHoveredChildFill(page: import("@playwright/test").Page, selector: string) {
+    return page.evaluate((sel) => {
+      const el = document.querySelector(sel);
+      if (!el) return null;
+      el.dispatchEvent(new MouseEvent("mouseover", { bubbles: true }));
+      const child = el.querySelector("polyline, path");
+      if (!child) return null;
+      return getComputedStyle(child).fill;
+    }, selector);
+  }
+
+  test("hairpin hover does not fill interior", async ({ page }) => {
+    await selectExample(page, "Dynamics & Expression");
+    const fill = await getHoveredChildFill(page, "svg g.hairpin");
+    expect(fill).toBe("none");
+  });
+
+  test("bracketSpan hover does not fill interior", async ({ page }) => {
+    await selectExample(page, "Tremolo, Harmony & Special");
+    const fill = await getHoveredChildFill(page, "svg g.bracketSpan");
+    expect(fill).toBe("none");
+  });
+
+  test("octave hover does not fill polyline interior", async ({ page }) => {
+    await selectExample(page, "Piano Techniques");
+    const fill = await page.evaluate(() => {
+      const el = document.querySelector("svg g.octave");
+      if (!el) return null;
+      el.dispatchEvent(new MouseEvent("mouseover", { bubbles: true }));
+      const polyline = el.querySelector("polyline");
+      if (!polyline) return null;
+      return getComputedStyle(polyline).fill;
+    });
+    expect(fill).toBe("none");
+  });
+
+  test("tupletSpan hover does not color child notes", async ({ page }) => {
+    await selectExample(page, "Tremolo, Harmony & Special");
+    const result = await page.evaluate(() => {
+      const tuplet = document.querySelector("svg g.tupletSpan");
+      if (!tuplet) return null;
+      tuplet.dispatchEvent(new MouseEvent("mouseover", { bubbles: true }));
+
+      // Check that child notes are NOT colored by the tuplet hover
+      const note = tuplet.querySelector("g.note .notehead use");
+      const bracket = tuplet.querySelector(".tupletBracket polyline");
+      if (!note || !bracket) return null;
+
+      return {
+        noteFill: getComputedStyle(note).fill,
+        bracketFill: getComputedStyle(bracket).fill,
+      };
+    });
+    expect(result).not.toBeNull();
+    // Note should keep its original fill (black), not the highlight color
+    expect(result!.noteFill).not.toContain("59, 130, 246");
+    // Bracket should have fill: none
+    expect(result!.bracketFill).toBe("none");
+  });
+});

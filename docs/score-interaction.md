@@ -1,0 +1,163 @@
+# Score Interaction Model
+
+This document describes how the score preview (`ScorePreview.tsx`) handles hover and click interactions on Verovio-rendered SVG elements.
+
+## INTERACTIVE_CLASSES
+
+All hoverable/clickable elements are listed in `INTERACTIVE_CLASSES`. Each entry corresponds to a CSS class that Verovio assigns to SVG `<g>` elements.
+
+| Category | Classes |
+|----------|---------|
+| Notes & rests | `note`, `chord`, `rest`, `mRest`, `beatRpt`, `halfmRpt`, `mRpt` |
+| Structure | `measure` |
+| Ornaments | `trill`, `mordent`, `turn`, `ornam` |
+| Articulation & expression | `fermata`, `arpeg`, `breath`, `caesura` |
+| Lines & curves | `slur`, `tie`, `phrase`, `gliss`, `hairpin`, `lv` |
+| Dynamics & text | `dynam`, `tempo`, `dir` |
+| Pedal & octave | `pedal`, `octave` |
+| Rehearsal & repeats | `reh`, `repeatMark` |
+| Harmony & fingering | `harm`, `fing` |
+| Spanning elements | `beamSpan`, `tupletSpan`, `bracketSpan` |
+| Tremolo | `bTrem`, `fTrem` |
+| Other | `bend`, `harpPedal` |
+
+## Verovio SVG output structure
+
+Verovio renders MEI elements as SVG `<g>` groups. The internal structure varies by element type, which directly affects how CSS highlights must be applied.
+
+### Fill-based elements (majority)
+
+Most elements use `<use>` glyph references whose color is controlled by `fill`. Notes, dynamics text, fermata symbols, etc. all fall into this category.
+
+```xml
+<g id="n1" class="note">
+  <g class="notehead">
+    <use xlink:href="#E0A4-..." />     <!-- glyph, colored by fill -->
+  </g>
+  <g class="stem">
+    <path d="..." stroke-width="18" />  <!-- stem line -->
+  </g>
+</g>
+```
+
+### Stroke-based elements
+
+Some elements are drawn with strokes only. Their SVG children have `fill="none"` inline, but CSS `fill !important` can override this and cause unwanted interior fill.
+
+**Hairpin** (crescendo/decrescendo wedge):
+```xml
+<g id="hp1" class="hairpin">
+  <polyline fill="none" points="..." />
+</g>
+```
+
+**bracketSpan** (bracket notation):
+```xml
+<g id="bks1" class="bracketSpan">
+  <polyline fill="none" points="..." />
+  <polyline fill="none" points="..." />
+</g>
+```
+
+### Mixed elements (fill + stroke)
+
+**Octave** (8va/8vb) uses a `<use>` glyph (fill) for the text label, a `<path>` for the dashed line (stroke), and a `<polyline>` for the hook (stroke):
+```xml
+<g id="oct1" class="octave">
+  <use xlink:href="#E510-..." />                    <!-- "8va" glyph (fill) -->
+  <path d="..." stroke-dasharray="36 72" />         <!-- dashed line (stroke) -->
+  <polyline fill="none" points="..." />             <!-- hook (stroke) -->
+</g>
+```
+
+### Elements that wrap child notes
+
+**tupletSpan** is unique: Verovio places the grouped notes as children of the tuplet `<g>`, alongside the bracket and number. This means a naive `* { fill: color }` rule would color the child notes too.
+
+```xml
+<g id="ts1" class="tuplet tupletSpan">
+  <g class="tupletNum">                  <!-- number glyph (fill) -->
+    <use xlink:href="#E883-..." />
+  </g>
+  <g class="tupletBracket">              <!-- bracket lines (stroke) -->
+    <polyline fill="none" points="..." />
+    <polyline fill="none" points="..." />
+  </g>
+  <g id="n14" class="note">...</g>       <!-- child note (must NOT be affected) -->
+  <g id="n15" class="note">...</g>
+  <g id="n16" class="note">...</g>
+</g>
+```
+
+## CSS highlight strategy
+
+Highlights are applied via CSS classes added by JavaScript event handlers. The design uses a 3-layer approach to handle the different SVG structures:
+
+### Layer 1: Default (fill-based)
+
+Applies to most elements. `score-hover` / `score-active` classes trigger `fill` color change and `drop-shadow` filter.
+
+```css
+.score-hover:not(.measure) * { fill: blue !important; }
+```
+
+### Layer 2: Stroke-only override
+
+For `hairpin`, `bracketSpan`, and `octave`, the fill must remain `none` and the stroke is colored instead. These rules appear **after** the default rules in source order to win by cascade (same specificity 0-2-0).
+
+```css
+.score-hover.hairpin * { fill: none !important; stroke: blue !important; }
+```
+
+For `octave`, only the direct child `<path>` and `<polyline>` are overridden (the `<use>` glyph correctly uses the default fill rule):
+
+```css
+.score-hover.octave > path,
+.score-hover.octave > polyline { fill: none !important; stroke: blue !important; }
+```
+
+### Layer 3: tupletSpan (separate class)
+
+Because tupletSpan wraps child notes, the default `score-hover *` rule would color everything inside. To avoid this, JavaScript applies a different class (`score-hover-tuplet` / `score-active-tuplet`) instead of `score-hover` / `score-active`. This class has no default `*` rule; it only targets the bracket and number sub-groups:
+
+```css
+.score-hover-tuplet > .tupletNum * { fill: blue !important; }
+.score-hover-tuplet > .tupletBracket * { fill: none !important; stroke: blue !important; }
+```
+
+### Specificity summary
+
+| Selector | Specificity | Purpose |
+|----------|-------------|---------|
+| `.score-hover:not(.measure) *` | 0-2-0 | Default fill highlight |
+| `.score-hover.hairpin *` | 0-2-0 | Stroke override (wins by source order) |
+| `.score-hover.octave > polyline` | 0-2-1 | Octave stroke elements only |
+| `.score-hover-tuplet > .tupletNum *` | 0-2-0 | Tuplet number (separate class, no conflict) |
+
+**Key rule**: never add `:not()` pseudo-classes to the default rule to exclude specific elements. Each `:not()` increases specificity by one class level, causing the default rule to outrank the override rules.
+
+## Adding a new interactive element
+
+1. **Add the class name** to `INTERACTIVE_CLASSES` in `ScorePreview.tsx`
+2. **Add the class name** to the CSS `pointer-events: bounding-box` selector list
+3. **Determine the highlight type** by inspecting the Verovio SVG output:
+   - Render an MEI file containing the element: `node -e "..."` (see test scripts) or use browser DevTools
+   - Check whether children use `fill` (glyphs) or `stroke` (lines/curves)
+4. **Apply the appropriate CSS layer**:
+   - Fill-based: no additional CSS needed (default rules apply)
+   - Stroke-based: add `fill: none` + `stroke: color` override after the default rules
+   - Wraps child notes: use a separate CSS class (like `score-hover-tuplet`) and add the JS logic in `handleMouseOver` / `handleMouseOut` / highlight effect
+5. **Add an example MEI file** in `src/assets/` that includes the element, and register it in `examples.ts`
+6. **Add an E2E test** in `e2e/editor.spec.ts` to verify the highlight does not fill interiors or affect unrelated child elements
+7. **Run verification**: `pnpm test --run && pnpm build && pnpm test:e2e`
+
+## E2E test coverage
+
+The `Stroke-based element highlights` test suite in `e2e/editor.spec.ts` verifies:
+
+- `hairpin` hover: `fill` is `none` on child polyline
+- `bracketSpan` hover: `fill` is `none` on child polyline
+- `octave` hover: `fill` is `none` on child polyline
+- `tupletSpan` hover: child notes are not colored, bracket `fill` is `none`
+
+These tests use `getComputedStyle` in a real browser to catch CSS specificity regressions that jsdom-based unit tests cannot detect.

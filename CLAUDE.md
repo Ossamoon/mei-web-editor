@@ -44,18 +44,20 @@ src/
 ├── utils/
 │   ├── validate.ts      # saxes-based XML well-formedness check (line/col errors)
 │   └── findXmlId.ts     # Find xml:id at cursor position (walks up parent elements)
-├── assets/              # Sample .mei files (5 examples)
+├── assets/              # Sample .mei files (9 examples)
 └── test/
     └── setup.ts         # Vitest global mocks (ResizeObserver, Verovio, URL API)
 e2e/
 └── editor.spec.ts       # Playwright E2E tests
+docs/
+└── score-interaction.md # Score highlight design: SVG structure, CSS strategy, adding new elements
 ```
 
 ## Key Patterns
 
 - **Debounced rendering**: Editor changes trigger validation + Verovio render after 300ms
 - **Error handling**: Invalid XML keeps last valid score visible with red overlay; saxes errors shown as CodeMirror lint diagnostics (squiggly lines + hover tooltips)
-- **Bidirectional sync**: Editor cursor → score highlight (orange); score click → editor jump; score hover → blue highlight
+- **Bidirectional sync**: Editor cursor → score highlight (orange); score click → editor jump; score hover → blue highlight. See `docs/score-interaction.md` for CSS highlight strategy details
 - **Verovio mock in tests**: `src/test/setup.ts` mocks `verovio/wasm` and `verovio/esm` globally for jsdom environment
 - **E2E editor access**: In dev mode, `window.__editorView` exposes CodeMirror EditorView for Playwright tests
 - **Test file exclusion**: `tsconfig.app.json` excludes `*.test.ts(x)` and `src/test/` from type-checking build

@@ -3,8 +3,8 @@ import { examples } from "./examples";
 import { validateXml } from "./utils/validate";
 
 describe("examples", () => {
-  it("contains 5 examples", () => {
-    expect(examples).toHaveLength(5);
+  it("contains 9 examples", () => {
+    expect(examples).toHaveLength(9);
   });
 
   it("each entry has required properties", () => {

@@ -14,7 +14,8 @@ A browser-based editor for [MEI (Music Encoding Initiative)](https://music-encod
   - Editor cursor position highlights the corresponding element in the score
   - Hover over score elements to see a blue highlight
 - **File I/O** -- Open `.mei`/`.xml` files via button or drag & drop; download with button or Ctrl+S / Cmd+S
-- **Example files** -- Built-in examples (scales, chords, piano, ornaments, lyrics) selectable from a dropdown
+- **Example files** -- Built-in examples selectable from a dropdown:
+  - C Major Scale, Chords & Voices, Piano (Grand Staff), Ornaments & Articulations, Melody with Lyrics, Dynamics & Expression, Piano Techniques, Repeats & Structure, Tremolo, Harmony & Special
 - **Cursor position** -- Line and column displayed in the status bar
 
 ## Getting Started
@@ -50,7 +51,7 @@ pnpm test:coverage # Coverage report
 ```
 
 - Unit/component tests: Vitest + Testing Library (55 tests)
-- E2E tests: Playwright on Chromium (13 tests)
+- E2E tests: Playwright on Chromium (17 tests)
 - Test-first development: new features and bug fixes start with a failing test
 
 ## Deployment
@@ -68,6 +69,10 @@ This project is configured for GitHub Pages via GitHub Actions. Push to the `mai
 | XML Validation | saxes (SAX parser) |
 | Styling | Tailwind CSS |
 | Split Pane | allotment |
+
+## Documentation
+
+- [Score Interaction Model](docs/score-interaction.md) -- How hover/click highlights work on Verovio SVG elements, CSS strategy, and guide for adding new interactive elements
 
 ## License
 

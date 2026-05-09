@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="https://music-encoding.org/schema/5.1/mei-basic.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<mei xmlns="http://www.music-encoding.org/ns/mei" meiversion="5.1+basic">
+  <meiHead>
+    <fileDesc>
+      <titleStmt>
+        <title>Repeats and Structure</title>
+      </titleStmt>
+      <pubStmt />
+    </fileDesc>
+  </meiHead>
+  <music>
+    <body>
+      <mdiv>
+        <score>
+          <scoreDef>
+            <staffGrp>
+              <staffDef n="1" lines="5" clef.shape="G" clef.line="2" meter.count="4" meter.unit="4" keysig="0" />
+            </staffGrp>
+          </scoreDef>
+          <section>
+            <!-- Measure 1: reh, repeatMark (segno) -->
+            <measure n="1" xml:id="m1">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n1" dur="4" oct="4" pname="c" />
+                  <note xml:id="n2" dur="4" oct="4" pname="d" />
+                  <note xml:id="n3" dur="4" oct="4" pname="e" />
+                  <note xml:id="n4" dur="4" oct="4" pname="f" />
+                </layer>
+              </staff>
+              <reh xml:id="reh1" startid="#n1">A</reh>
+              <repeatMark xml:id="rm1" startid="#n1" func="segno" />
+            </measure>
+            <!-- Measure 2: beatRpt -->
+            <measure n="2" xml:id="m2">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n5" dur="4" oct="4" pname="g" />
+                  <note xml:id="n6" dur="4" oct="4" pname="a" />
+                  <beatRpt xml:id="brpt1" />
+                </layer>
+              </staff>
+            </measure>
+            <!-- Measure 3: mRest -->
+            <measure n="3" xml:id="m3">
+              <staff n="1">
+                <layer n="1">
+                  <mRest xml:id="mr1" />
+                </layer>
+              </staff>
+            </measure>
+            <!-- Measure 4: halfmRpt -->
+            <measure n="4" xml:id="m4">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n7" dur="4" oct="4" pname="c" />
+                  <note xml:id="n8" dur="4" oct="4" pname="d" />
+                  <halfmRpt xml:id="hmrpt1" />
+                </layer>
+              </staff>
+            </measure>
+            <!-- Measure 5: mRpt -->
+            <measure n="5" xml:id="m5">
+              <staff n="1">
+                <layer n="1">
+                  <mRpt xml:id="mrpt1" />
+                </layer>
+              </staff>
+            </measure>
+            <!-- Measure 6: repeatMark (D.S. al Coda) -->
+            <measure n="6" xml:id="m6" right="end">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n9" dur="4" oct="5" pname="c" />
+                  <note xml:id="n10" dur="4" oct="4" pname="b" />
+                  <note xml:id="n11" dur="4" oct="4" pname="a" />
+                  <note xml:id="n12" dur="4" oct="4" pname="g" />
+                </layer>
+              </staff>
+              <reh xml:id="reh2" startid="#n9">B</reh>
+              <repeatMark xml:id="rm2" startid="#n12" func="daCapo" />
+            </measure>
+          </section>
+        </score>
+      </mdiv>
+    </body>
+  </music>
+</mei>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="https://music-encoding.org/schema/5.1/mei-basic.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<mei xmlns="http://www.music-encoding.org/ns/mei" meiversion="5.1+basic">
+  <meiHead>
+    <fileDesc>
+      <titleStmt>
+        <title>Piano Techniques</title>
+      </titleStmt>
+      <pubStmt />
+    </fileDesc>
+  </meiHead>
+  <music>
+    <body>
+      <mdiv>
+        <score>
+          <scoreDef>
+            <staffGrp symbol="brace" bar.thru="true">
+              <staffDef n="1" lines="5" clef.shape="G" clef.line="2" meter.count="4" meter.unit="4" keysig="0" />
+              <staffDef n="2" lines="5" clef.shape="F" clef.line="4" meter.count="4" meter.unit="4" keysig="0" />
+            </staffGrp>
+          </scoreDef>
+          <section>
+            <!-- Measure 1: arpeg, mordent, fing -->
+            <measure n="1" xml:id="m1">
+              <staff n="1">
+                <layer n="1">
+                  <chord xml:id="ch1" dur="2" stem.dir="up">
+                    <note xml:id="n1" oct="4" pname="c" />
+                    <note xml:id="n2" oct="4" pname="e" />
+                    <note xml:id="n3" oct="4" pname="g" />
+                  </chord>
+                  <note xml:id="n4" dur="4" oct="5" pname="c" />
+                  <note xml:id="n5" dur="4" oct="4" pname="b" />
+                </layer>
+              </staff>
+              <staff n="2">
+                <layer n="1">
+                  <note xml:id="n6" dur="1" oct="3" pname="c" />
+                </layer>
+              </staff>
+              <arpeg xml:id="arp1" startid="#ch1" />
+              <mordent xml:id="mord1" startid="#n4" place="above" />
+              <fing xml:id="fg1" startid="#n4" place="above">3</fing>
+              <fing xml:id="fg2" startid="#n5" place="above">2</fing>
+            </measure>
+            <!-- Measure 2: pedal, octave -->
+            <measure n="2" xml:id="m2">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n7" dur="4" oct="5" pname="c" />
+                  <note xml:id="n8" dur="4" oct="5" pname="d" />
+                  <note xml:id="n9" dur="4" oct="5" pname="e" />
+                  <note xml:id="n10" dur="4" oct="5" pname="f" />
+                </layer>
+              </staff>
+              <staff n="2">
+                <layer n="1">
+                  <note xml:id="n11" dur="1" oct="3" pname="g" />
+                </layer>
+              </staff>
+              <pedal xml:id="ped1" startid="#n7" dir="down" place="below" staff="2" />
+              <octave xml:id="oct1" startid="#n7" endid="#n10" dis="8" dis.place="above" staff="1" />
+            </measure>
+            <!-- Measure 3: gliss, lv -->
+            <measure n="3" xml:id="m3" right="end">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n12" dur="4" oct="4" pname="c" />
+                  <note xml:id="n13" dur="4" oct="5" pname="c" />
+                  <note xml:id="n14" dur="2" oct="5" pname="c" />
+                </layer>
+              </staff>
+              <staff n="2">
+                <layer n="1">
+                  <chord xml:id="ch2" dur="1">
+                    <note xml:id="n15" oct="3" pname="c" />
+                    <note xml:id="n16" oct="3" pname="g" />
+                  </chord>
+                </layer>
+              </staff>
+              <gliss xml:id="gl1" startid="#n12" endid="#n13" />
+              <lv xml:id="lv1" startid="#n14" />
+              <pedal xml:id="ped2" startid="#n14" dir="up" place="below" staff="2" />
+            </measure>
+          </section>
+        </score>
+      </mdiv>
+    </body>
+  </music>
+</mei>

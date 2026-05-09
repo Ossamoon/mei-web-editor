@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="https://music-encoding.org/schema/5.1/mei-basic.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<mei xmlns="http://www.music-encoding.org/ns/mei" meiversion="5.1+basic">
+  <meiHead>
+    <fileDesc>
+      <titleStmt>
+        <title>Dynamics and Expression</title>
+      </titleStmt>
+      <pubStmt />
+    </fileDesc>
+  </meiHead>
+  <music>
+    <body>
+      <mdiv>
+        <score>
+          <scoreDef>
+            <staffGrp>
+              <staffDef n="1" lines="5" clef.shape="G" clef.line="2" meter.count="4" meter.unit="4" keysig="0" />
+            </staffGrp>
+          </scoreDef>
+          <section>
+            <!-- Measure 1: tempo, dynam, tie -->
+            <measure n="1" xml:id="m1">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n1" dur="4" oct="4" pname="c" />
+                  <note xml:id="n2" dur="4" oct="4" pname="e" />
+                  <note xml:id="n3" dur="4" oct="4" pname="g" />
+                  <note xml:id="n4" dur="4" oct="5" pname="c" />
+                </layer>
+              </staff>
+              <tempo xml:id="tempo1" startid="#n1" place="above">Allegro ♩= 120</tempo>
+              <dynam xml:id="dyn1" startid="#n1" place="below">p</dynam>
+              <tie xml:id="tie1" startid="#n4" endid="#n5" />
+            </measure>
+            <!-- Measure 2: hairpin (crescendo), dir -->
+            <measure n="2" xml:id="m2">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n5" dur="4" oct="5" pname="c" />
+                  <note xml:id="n6" dur="4" oct="4" pname="b" />
+                  <note xml:id="n7" dur="4" oct="4" pname="a" />
+                  <note xml:id="n8" dur="4" oct="4" pname="g" />
+                </layer>
+              </staff>
+              <hairpin xml:id="hp1" startid="#n5" endid="#n8" form="cres" place="below" />
+              <dir xml:id="dir1" startid="#n5" place="above">dolce</dir>
+            </measure>
+            <!-- Measure 3: dynam (forte), hairpin (decrescendo), phrase -->
+            <measure n="3" xml:id="m3">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n9" dur="4" oct="4" pname="f" />
+                  <note xml:id="n10" dur="4" oct="4" pname="a" />
+                  <note xml:id="n11" dur="4" oct="5" pname="c" />
+                  <note xml:id="n12" dur="4" oct="4" pname="a" />
+                </layer>
+              </staff>
+              <dynam xml:id="dyn2" startid="#n9" place="below">f</dynam>
+              <hairpin xml:id="hp2" startid="#n10" endid="#n12" form="dim" place="below" />
+              <phrase xml:id="phr1" startid="#n9" endid="#n12" />
+            </measure>
+            <!-- Measure 4: breath, caesura, dir (rit.) -->
+            <measure n="4" xml:id="m4" right="end">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n13" dur="4" oct="4" pname="e" />
+                  <note xml:id="n14" dur="4" oct="4" pname="d" />
+                  <note xml:id="n15" dur="2" oct="4" pname="c" />
+                </layer>
+              </staff>
+              <breath xml:id="br1" startid="#n13" place="above" />
+              <dir xml:id="dir2" startid="#n14" place="above">rit.</dir>
+              <caesura xml:id="cae1" startid="#n14" />
+              <dynam xml:id="dyn3" startid="#n15" place="below">pp</dynam>
+            </measure>
+          </section>
+        </score>
+      </mdiv>
+    </body>
+  </music>
+</mei>

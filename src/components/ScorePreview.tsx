@@ -9,8 +9,32 @@ interface ScorePreviewProps {
 
 // Verovio CSS classes that represent clickable/hoverable musical elements
 const INTERACTIVE_CLASSES = new Set([
+  // Notes & rests
   "note", "chord", "rest", "mRest", "beatRpt", "halfmRpt", "mRpt",
+  // Structure
   "measure",
+  // Ornaments
+  "trill", "mordent", "turn", "ornam",
+  // Articulation & expression
+  "fermata", "arpeg", "breath", "caesura",
+  // Lines & curves
+  "slur", "tie", "phrase", "gliss", "hairpin", "lv",
+  // Dynamics & text
+  "dynam", "tempo", "dir",
+  // Pedal & octave
+  "pedal", "octave",
+  // Rehearsal & repeats
+  "reh", "repeatMark",
+  // Harmony
+  "harm",
+  // Fingering
+  "fing",
+  // Spanning elements
+  "beamSpan", "tupletSpan", "bracketSpan",
+  // Tremolo
+  "bTrem", "fTrem",
+  // Other
+  "bend", "harpPedal",
 ]);
 
 function findNoteElement(el: Element | null, container: Element | null): Element | null {
@@ -28,6 +52,10 @@ function findNoteElement(el: Element | null, container: Element | null): Element
 
 function isMeasure(el: Element): boolean {
   return el.getAttribute("class")?.split(" ").includes("measure") ?? false;
+}
+
+function isTupletSpan(el: Element): boolean {
+  return el.getAttribute("class")?.split(" ").includes("tupletSpan") ?? false;
 }
 
 /**
@@ -124,7 +152,7 @@ export function ScorePreview({
     const el = findNoteElement(e.target as Element, container);
 
     if (hoveredRef.current && hoveredRef.current !== el) {
-      hoveredRef.current.classList.remove("score-hover");
+      hoveredRef.current.classList.remove("score-hover", "score-hover-tuplet");
       if (isMeasure(hoveredRef.current)) {
         removeMeasureOverlay(hoveredRef.current, "measure-hover-overlay");
       }
@@ -132,7 +160,7 @@ export function ScorePreview({
     }
 
     if (el && el !== hoveredRef.current) {
-      el.classList.add("score-hover");
+      el.classList.add(isTupletSpan(el) ? "score-hover-tuplet" : "score-hover");
       hoveredRef.current = el;
       if (isMeasure(el) && !el.classList.contains("score-active")) {
         addMeasureOverlay(el, "rgba(59, 130, 246, 0.08)", "measure-hover-overlay");
@@ -147,7 +175,7 @@ export function ScorePreview({
     const related = e.relatedTarget as Element | null;
     if (!related || !container.contains(related)) {
       if (hoveredRef.current) {
-        hoveredRef.current.classList.remove("score-hover");
+        hoveredRef.current.classList.remove("score-hover", "score-hover-tuplet");
         if (isMeasure(hoveredRef.current)) {
           removeMeasureOverlay(hoveredRef.current, "measure-hover-overlay");
         }
@@ -176,9 +204,9 @@ export function ScorePreview({
     if (!container) return;
 
     // Remove previous active highlight
-    const prev = container.querySelector(".score-active");
+    const prev = container.querySelector(".score-active, .score-active-tuplet");
     if (prev) {
-      prev.classList.remove("score-active");
+      prev.classList.remove("score-active", "score-active-tuplet");
       if (isMeasure(prev)) {
         removeMeasureOverlay(prev, "measure-active-overlay");
       }
@@ -187,7 +215,7 @@ export function ScorePreview({
     if (highlightedId) {
       const el = container.querySelector(`#${CSS.escape(highlightedId)}`);
       if (el) {
-        el.classList.add("score-active");
+        el.classList.add(isTupletSpan(el) ? "score-active-tuplet" : "score-active");
         if (isMeasure(el)) {
           addMeasureOverlay(el, "rgba(234, 88, 12, 0.08)", "measure-active-overlay");
         }
@@ -198,14 +226,47 @@ export function ScorePreview({
   return (
     <div className="relative h-full w-full overflow-auto bg-white">
       <style>{`
-        .note, .chord, .rest, .mRest, .beatRpt, .halfmRpt, .mRpt, .measure {
+        .note, .chord, .rest, .mRest, .beatRpt, .halfmRpt, .mRpt,
+        .measure,
+        .trill, .mordent, .turn, .ornam,
+        .fermata, .arpeg, .breath, .caesura,
+        .slur, .tie, .phrase, .gliss, .hairpin, .lv,
+        .dynam, .tempo, .dir,
+        .pedal, .octave,
+        .reh, .repeatMark,
+        .harm, .fing,
+        .beamSpan, .tupletSpan, .bracketSpan,
+        .bTrem, .fTrem,
+        .bend, .harpPedal {
           pointer-events: bounding-box;
           cursor: pointer;
         }
+        /* Default: fill-based highlight (notes, dynamics, text, etc.) */
         .score-hover:not(.measure) { filter: drop-shadow(0 0 3px rgba(59, 130, 246, 0.6)); }
         .score-hover:not(.measure) * { fill: rgba(59, 130, 246, 0.7) !important; }
         .score-active:not(.measure) { filter: drop-shadow(0 0 4px rgba(234, 88, 12, 0.6)); }
         .score-active:not(.measure) * { fill: rgba(234, 88, 12, 0.7) !important; }
+
+        /* Stroke-only elements: override fill to none, color the stroke.
+           .score-hover.X has specificity 0-2-0, same as default 0-2-0 for "*"
+           but these rules appear later in source order and win on cascade. */
+        .score-hover.hairpin *,
+        .score-hover.bracketSpan * { fill: none !important; stroke: rgba(59, 130, 246, 0.7) !important; }
+        .score-active.hairpin *,
+        .score-active.bracketSpan * { fill: none !important; stroke: rgba(234, 88, 12, 0.7) !important; }
+
+        /* Octave: <use> glyph (fill) + <path> dashed line (stroke) + <polyline> hook (stroke) */
+        .score-hover.octave > path,
+        .score-hover.octave > polyline { fill: none !important; stroke: rgba(59, 130, 246, 0.7) !important; }
+        .score-active.octave > path,
+        .score-active.octave > polyline { fill: none !important; stroke: rgba(234, 88, 12, 0.7) !important; }
+
+        /* tupletSpan: wraps child notes in SVG — use a separate class to avoid
+           the default "score-hover *" rule from coloring child notes. */
+        .score-hover-tuplet > .tupletNum * { fill: rgba(59, 130, 246, 0.7) !important; }
+        .score-hover-tuplet > .tupletBracket * { fill: none !important; stroke: rgba(59, 130, 246, 0.7) !important; }
+        .score-active-tuplet > .tupletNum * { fill: rgba(234, 88, 12, 0.7) !important; }
+        .score-active-tuplet > .tupletBracket * { fill: none !important; stroke: rgba(234, 88, 12, 0.7) !important; }
       `}</style>
       <div
         ref={containerRef}
