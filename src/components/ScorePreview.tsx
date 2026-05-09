@@ -7,10 +7,19 @@ interface ScorePreviewProps {
   onNoteClick: (xmlId: string) => void;
 }
 
+// Verovio CSS classes that represent clickable/hoverable musical elements
+const INTERACTIVE_CLASSES = new Set([
+  "note", "chord", "rest", "mRest", "beatRpt", "halfmRpt", "mRpt",
+  "measure",
+]);
+
 function findNoteElement(el: Element | null, container: Element | null): Element | null {
   while (el && el !== container) {
-    if (el.id && !el.id.startsWith("page") && !el.id.startsWith("def")) {
-      return el;
+    if (el.id) {
+      const classes = el.getAttribute("class")?.split(" ") ?? [];
+      if (classes.some((c) => INTERACTIVE_CLASSES.has(c))) {
+        return el;
+      }
     }
     el = el.parentElement;
   }

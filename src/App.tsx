@@ -7,7 +7,10 @@ import { MeiEditor } from "./components/MeiEditor";
 import { ScorePreview } from "./components/ScorePreview";
 import { StatusBar } from "./components/StatusBar";
 import { useVerovio } from "./hooks/useVerovio";
+import { useKeyboardShortcut } from "./hooks/useKeyboardShortcut";
+import { useDragAndDrop } from "./hooks/useDragAndDrop";
 import { validateXml, type XmlError } from "./utils/validate";
+import { findXmlIdAtCursor } from "./utils/findXmlId";
 import { examples } from "./examples";
 
 function App() {
@@ -89,44 +92,10 @@ function App() {
   }, [meiContent, fileName]);
 
   // Ctrl+S / Cmd+S to download
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === "s") {
-        e.preventDefault();
-        handleDownload();
-      }
-    };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
-  }, [handleDownload]);
+  useKeyboardShortcut("s", handleDownload);
 
   // Drag & Drop
-  useEffect(() => {
-    const handleDragOver = (e: DragEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-    };
-
-    const handleDrop = (e: DragEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-      const file = e.dataTransfer?.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = () => {
-        handleFileOpen(reader.result as string, file.name);
-      };
-      reader.readAsText(file);
-    };
-
-    window.addEventListener("dragover", handleDragOver);
-    window.addEventListener("drop", handleDrop);
-    return () => {
-      window.removeEventListener("dragover", handleDragOver);
-      window.removeEventListener("drop", handleDrop);
-    };
-  }, [handleFileOpen]);
+  useDragAndDrop(handleFileOpen);
 
   // Re-render on resize of score panel
   useEffect(() => {
@@ -161,29 +130,7 @@ function App() {
     (line: number, col: number) => {
       setCursorLine(line);
       setCursorCol(col);
-
-      // Find xml:id near cursor position
-      const content = latestContentRef.current;
-      const lines = content.split("\n");
-      const cursorLineText = lines[line - 1] ?? "";
-
-      // Search current line for xml:id="..."
-      const idMatch = cursorLineText.match(/xml:id="([^"]+)"/);
-      if (idMatch) {
-        setHighlightedNoteId(idMatch[1]);
-      } else {
-        // Walk up to find enclosing element with xml:id
-        for (let i = line - 2; i >= 0; i--) {
-          const lineText = lines[i];
-          // Stop at opening tags
-          if (lineText.match(/<\w/)) {
-            const parentId = lineText.match(/xml:id="([^"]+)"/);
-            setHighlightedNoteId(parentId ? parentId[1] : null);
-            return;
-          }
-        }
-        setHighlightedNoteId(null);
-      }
+      setHighlightedNoteId(findXmlIdAtCursor(latestContentRef.current, line));
     },
     [],
   );

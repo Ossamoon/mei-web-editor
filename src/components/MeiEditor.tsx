@@ -92,6 +92,11 @@ export function MeiEditor({ value, onChange, errors, onCursorChange }: MeiEditor
 
     viewRef.current = view;
 
+    // Expose for E2E testing
+    if (import.meta.env.DEV) {
+      (window as unknown as Record<string, unknown>).__editorView = view;
+    }
+
     return () => {
       view.destroy();
       viewRef.current = null;
