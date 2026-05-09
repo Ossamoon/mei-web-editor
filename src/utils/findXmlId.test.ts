@@ -67,4 +67,93 @@ describe("findXmlIdAtCursor", () => {
   it("returns null at the very first line with no id", () => {
     expect(findXmlIdAtCursor(sampleMei, 1)).toBeNull();
   });
+
+  // --- Bug fix tests: closing tags should return parent's xml:id ---
+
+  it("returns measure id on </layer> closing tag", () => {
+    // Line 12 is </layer> — should return enclosing measure "m1", not sibling "n2"
+    expect(findXmlIdAtCursor(sampleMei, 12)).toBe("m1");
+  });
+
+  it("returns measure id on </staff> closing tag", () => {
+    // Line 13 is </staff> — should return enclosing measure "m1"
+    expect(findXmlIdAtCursor(sampleMei, 13)).toBe("m1");
+  });
+
+  it("returns measure id on </measure> closing tag", () => {
+    // Line 14 is </measure> — should return "m1" (the measure itself)
+    expect(findXmlIdAtCursor(sampleMei, 14)).toBe("m1");
+  });
+
+  it("returns note id for child element inside a multi-line note", () => {
+    const meiWithLyrics = `<mei>
+  <music>
+    <body>
+      <mdiv>
+        <score>
+          <section>
+            <measure n="1" xml:id="m1">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n1" dur="4" oct="4" pname="f">
+                    <verse n="1"><syl>Twin</syl></verse>
+                  </note>
+                </layer>
+              </staff>
+            </measure>
+          </section>
+        </score>
+      </mdiv>
+    </body>
+  </music>
+</mei>`;
+    // Line 11 is <verse><syl>Twin</syl></verse> inside <note xml:id="n1"> — should return "n1"
+    expect(findXmlIdAtCursor(meiWithLyrics, 11)).toBe("n1");
+    // Line 12 is </note> — should still return "n1"
+    expect(findXmlIdAtCursor(meiWithLyrics, 12)).toBe("n1");
+  });
+
+  it("returns correct measure id across multiple measures", () => {
+    const twoMeasures = `<mei>
+  <music>
+    <body>
+      <mdiv>
+        <score>
+          <section>
+            <measure n="1" xml:id="m1">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n1" dur="4" oct="4" pname="c" />
+                </layer>
+              </staff>
+            </measure>
+            <measure n="2" xml:id="m2">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n2" dur="4" oct="4" pname="d" />
+                </layer>
+              </staff>
+            </measure>
+          </section>
+        </score>
+      </mdiv>
+    </body>
+  </music>
+</mei>`;
+    // Line 13 is </measure> of m1
+    expect(findXmlIdAtCursor(twoMeasures, 13)).toBe("m1");
+    // Line 14 is <measure n="2" xml:id="m2">
+    expect(findXmlIdAtCursor(twoMeasures, 14)).toBe("m2");
+    // Line 18 is </layer> inside m2 — should return "m2", not "n2"
+    expect(findXmlIdAtCursor(twoMeasures, 18)).toBe("m2");
+    // Line 20 is </measure> of m2
+    expect(findXmlIdAtCursor(twoMeasures, 20)).toBe("m2");
+  });
+
+  it("returns null for structural elements above measure level", () => {
+    // Line 6 is <section> — no xml:id above it
+    expect(findXmlIdAtCursor(sampleMei, 6)).toBeNull();
+    // Line 3 is <body>
+    expect(findXmlIdAtCursor(sampleMei, 3)).toBeNull();
+  });
 });

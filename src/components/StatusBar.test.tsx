@@ -42,4 +42,51 @@ describe("StatusBar", () => {
     expect(screen.getByText("Loading Verovio...")).toBeInTheDocument();
     expect(screen.queryByText("Valid XML")).not.toBeInTheDocument();
   });
+
+  describe("cursor context display", () => {
+    it("shows nothing when cursorContext is null", () => {
+      render(<StatusBar {...defaultProps} cursorContext={null} />);
+      expect(screen.queryByTestId("cursor-context")).not.toBeInTheDocument();
+    });
+
+    it("shows element name", () => {
+      render(
+        <StatusBar
+          {...defaultProps}
+          cursorContext={{ element: "note", xmlId: null, attribute: null, text: null }}
+        />,
+      );
+      expect(screen.getByText("<note>")).toBeInTheDocument();
+    });
+
+    it("shows element with attribute", () => {
+      render(
+        <StatusBar
+          {...defaultProps}
+          cursorContext={{ element: "note", xmlId: null, attribute: "dur", text: null }}
+        />,
+      );
+      expect(screen.getByText(/dur/)).toBeInTheDocument();
+    });
+
+    it("shows element with text content", () => {
+      render(
+        <StatusBar
+          {...defaultProps}
+          cursorContext={{ element: "syl", xmlId: null, attribute: null, text: "Twin" }}
+        />,
+      );
+      expect(screen.getByText(/"Twin"/)).toBeInTheDocument();
+    });
+
+    it("shows xmlId when present", () => {
+      render(
+        <StatusBar
+          {...defaultProps}
+          cursorContext={{ element: "note", xmlId: "n1", attribute: null, text: null }}
+        />,
+      );
+      expect(screen.getByText(/n1/)).toBeInTheDocument();
+    });
+  });
 });

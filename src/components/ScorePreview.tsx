@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback, memo } from "react";
 
 interface ScorePreviewProps {
   svgContent: string | null;
@@ -128,7 +128,7 @@ function removeMeasureOverlay(el: Element, className: string) {
   el.querySelectorAll(`:scope > .${className}`).forEach((rect) => rect.remove());
 }
 
-export function ScorePreview({
+export const ScorePreview = memo(function ScorePreview({
   svgContent,
   hasError,
   highlightedId,
@@ -163,7 +163,7 @@ export function ScorePreview({
       el.classList.add(isTupletSpan(el) ? "score-hover-tuplet" : "score-hover");
       hoveredRef.current = el;
       if (isMeasure(el) && !el.classList.contains("score-active")) {
-        addMeasureOverlay(el, "rgba(59, 130, 246, 0.08)", "measure-hover-overlay");
+        addMeasureOverlay(el, "rgba(59, 130, 246, 0.06)", "measure-hover-overlay");
       }
     }
   }, []);
@@ -217,7 +217,7 @@ export function ScorePreview({
       if (el) {
         el.classList.add(isTupletSpan(el) ? "score-active-tuplet" : "score-active");
         if (isMeasure(el)) {
-          addMeasureOverlay(el, "rgba(234, 88, 12, 0.08)", "measure-active-overlay");
+          addMeasureOverlay(el, "rgba(59, 130, 246, 0.12)", "measure-active-overlay");
         }
       }
     }
@@ -241,32 +241,33 @@ export function ScorePreview({
           pointer-events: bounding-box;
           cursor: pointer;
         }
-        /* Default: fill-based highlight (notes, dynamics, text, etc.) */
-        .score-hover:not(.measure) { filter: drop-shadow(0 0 3px rgba(59, 130, 246, 0.6)); }
-        .score-hover:not(.measure) * { fill: rgba(59, 130, 246, 0.7) !important; }
-        .score-active:not(.measure) { filter: drop-shadow(0 0 4px rgba(234, 88, 12, 0.6)); }
-        .score-active:not(.measure) * { fill: rgba(234, 88, 12, 0.7) !important; }
+        /* Default: fill-based highlight (notes, dynamics, text, etc.)
+           Hover = lighter blue, Active = darker blue (same hue, different intensity) */
+        .score-hover:not(.measure) { filter: drop-shadow(0 0 3px rgba(59, 130, 246, 0.4)); }
+        .score-hover:not(.measure) * { fill: rgba(59, 130, 246, 0.5) !important; }
+        .score-active:not(.measure) { filter: drop-shadow(0 0 4px rgba(59, 130, 246, 0.7)); }
+        .score-active:not(.measure) * { fill: rgba(59, 130, 246, 0.85) !important; }
 
         /* Stroke-only elements: override fill to none, color the stroke.
            .score-hover.X has specificity 0-2-0, same as default 0-2-0 for "*"
            but these rules appear later in source order and win on cascade. */
         .score-hover.hairpin *,
-        .score-hover.bracketSpan * { fill: none !important; stroke: rgba(59, 130, 246, 0.7) !important; }
+        .score-hover.bracketSpan * { fill: none !important; stroke: rgba(59, 130, 246, 0.5) !important; }
         .score-active.hairpin *,
-        .score-active.bracketSpan * { fill: none !important; stroke: rgba(234, 88, 12, 0.7) !important; }
+        .score-active.bracketSpan * { fill: none !important; stroke: rgba(59, 130, 246, 0.85) !important; }
 
         /* Octave: <use> glyph (fill) + <path> dashed line (stroke) + <polyline> hook (stroke) */
         .score-hover.octave > path,
-        .score-hover.octave > polyline { fill: none !important; stroke: rgba(59, 130, 246, 0.7) !important; }
+        .score-hover.octave > polyline { fill: none !important; stroke: rgba(59, 130, 246, 0.5) !important; }
         .score-active.octave > path,
-        .score-active.octave > polyline { fill: none !important; stroke: rgba(234, 88, 12, 0.7) !important; }
+        .score-active.octave > polyline { fill: none !important; stroke: rgba(59, 130, 246, 0.85) !important; }
 
         /* tupletSpan: wraps child notes in SVG — use a separate class to avoid
            the default "score-hover *" rule from coloring child notes. */
-        .score-hover-tuplet > .tupletNum * { fill: rgba(59, 130, 246, 0.7) !important; }
-        .score-hover-tuplet > .tupletBracket * { fill: none !important; stroke: rgba(59, 130, 246, 0.7) !important; }
-        .score-active-tuplet > .tupletNum * { fill: rgba(234, 88, 12, 0.7) !important; }
-        .score-active-tuplet > .tupletBracket * { fill: none !important; stroke: rgba(234, 88, 12, 0.7) !important; }
+        .score-hover-tuplet > .tupletNum * { fill: rgba(59, 130, 246, 0.5) !important; }
+        .score-hover-tuplet > .tupletBracket * { fill: none !important; stroke: rgba(59, 130, 246, 0.5) !important; }
+        .score-active-tuplet > .tupletNum * { fill: rgba(59, 130, 246, 0.85) !important; }
+        .score-active-tuplet > .tupletBracket * { fill: none !important; stroke: rgba(59, 130, 246, 0.85) !important; }
       `}</style>
       <div
         ref={containerRef}
@@ -278,4 +279,4 @@ export function ScorePreview({
       )}
     </div>
   );
-}
+});

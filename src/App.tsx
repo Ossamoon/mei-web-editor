@@ -11,6 +11,7 @@ import { useKeyboardShortcut } from "./hooks/useKeyboardShortcut";
 import { useDragAndDrop } from "./hooks/useDragAndDrop";
 import { validateXml, type XmlError } from "./utils/validate";
 import { findXmlIdAtCursor } from "./utils/findXmlId";
+import { findElementAtCursor, type CursorContext } from "./utils/findElement";
 import { examples } from "./examples";
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
   const [cursorLine, setCursorLine] = useState(1);
   const [cursorCol, setCursorCol] = useState(0);
   const [highlightedNoteId, setHighlightedNoteId] = useState<string | null>(null);
+  const [cursorContext, setCursorContext] = useState<CursorContext | null>(null);
   const { isReady, renderMei } = useVerovio();
 
   const editorContainerRef = useRef<HTMLDivElement>(null);
@@ -56,6 +58,7 @@ function App() {
   // Debounced render on content change
   const handleContentChange = useCallback(
     (newContent: string) => {
+      latestContentRef.current = newContent;
       setMeiContent(newContent);
       setIsDirty(true);
       if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
@@ -130,7 +133,9 @@ function App() {
     (line: number, col: number) => {
       setCursorLine(line);
       setCursorCol(col);
-      setHighlightedNoteId(findXmlIdAtCursor(latestContentRef.current, line));
+      const content = latestContentRef.current;
+      setHighlightedNoteId(findXmlIdAtCursor(content, line));
+      setCursorContext(findElementAtCursor(content, line, col));
     },
     [],
   );
@@ -181,6 +186,7 @@ function App() {
         verovioReady={isReady}
         cursorLine={cursorLine}
         cursorCol={cursorCol}
+        cursorContext={cursorContext}
       />
     </div>
   );

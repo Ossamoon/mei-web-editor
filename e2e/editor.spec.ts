@@ -201,6 +201,195 @@ test.describe("Score hover and highlight", () => {
   });
 });
 
+test.describe("Cursor context in status bar", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/");
+    await expect(page.locator("svg").first()).toBeVisible({ timeout: 15000 });
+  });
+
+  async function moveCursorToLine(page: import("@playwright/test").Page, lineNumber: number) {
+    await page.evaluate((ln) => {
+      const view = (window as unknown as Record<string, unknown>).__editorView as {
+        dispatch: (tr: Record<string, unknown>) => void;
+        state: { doc: { line: (n: number) => { from: number } } };
+      };
+      if (!view) throw new Error("EditorView not found on window");
+      const pos = view.state.doc.line(ln).from;
+      view.dispatch({ selection: { anchor: pos } });
+    }, lineNumber);
+    await page.waitForTimeout(400);
+  }
+
+  test("shows element name when cursor is on a note line", async ({ page }) => {
+    // Line 25 in sample.mei: <note xml:id="n1" .../>
+    await moveCursorToLine(page, 25);
+    const context = page.getByTestId("cursor-context");
+    await expect(context).toContainText("<note>");
+  });
+
+  test("shows element name on closing tag line", async ({ page }) => {
+    // Line 29 in sample.mei: </layer>
+    await moveCursorToLine(page, 29);
+    const context = page.getByTestId("cursor-context");
+    await expect(context).toBeVisible();
+    // Should show the enclosing element (layer or measure depending on col=0)
+  });
+});
+
+/** Shared helper: move cursor to a specific line in the editor */
+async function moveCursorToLine(page: import("@playwright/test").Page, lineNumber: number) {
+  await page.evaluate((ln) => {
+    const view = (window as unknown as Record<string, unknown>).__editorView as {
+      dispatch: (tr: Record<string, unknown>) => void;
+      state: { doc: { line: (n: number) => { from: number } } };
+    };
+    if (!view) throw new Error("EditorView not found on window");
+    const pos = view.state.doc.line(ln).from;
+    view.dispatch({ selection: { anchor: pos } });
+  }, lineNumber);
+  // Wait for React state update
+  await page.waitForTimeout(400);
+}
+
+/** Shared helper: get full highlight diagnostic at current cursor position */
+async function getHighlightState(page: import("@playwright/test").Page) {
+  return page.evaluate(() => {
+    const active = document.querySelector(".score-active, .score-active-tuplet");
+    const overlay = document.querySelector(".measure-active-overlay");
+    const statusCtx = document.querySelector("[data-testid='cursor-context']");
+    return {
+      activeId: active?.id ?? null,
+      activeClasses: active?.getAttribute("class") ?? null,
+      hasOverlay: !!overlay,
+      statusText: statusCtx?.textContent ?? null,
+    };
+  });
+}
+
+test.describe("Cursor to score active highlight", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/");
+    await expect(page.locator("svg").first()).toBeVisible({ timeout: 15000 });
+  });
+
+  test("cursor on note line activates corresponding SVG element", async ({ page }) => {
+    // Line 25 in sample.mei is: <note xml:id="n1" ...>
+    await moveCursorToLine(page, 25);
+
+    // The SVG element with id containing "n1" should have score-active
+    const activeEl = await page.evaluate(() => {
+      const el = document.querySelector(".score-active");
+      return el?.id ?? null;
+    });
+    expect(activeEl).toBeTruthy();
+  });
+
+  test("highlight persists on every line within a measure", async ({ page }) => {
+    // sample.mei measure 1 spans lines 22-31:
+    //   22: <measure n="1" xml:id="m1">
+    //   23:   <staff n="1">
+    //   24:     <layer n="1">
+    //   25:       <note xml:id="n1" .../>
+    //   26:       <note xml:id="n2" .../>
+    //   27:       <note xml:id="n3" .../>
+    //   28:       <note xml:id="n4" .../>
+    //   29:     </layer>
+    //   30:   </staff>
+    //   31: </measure>
+    // Every line should have some element highlighted (score-active).
+
+    const results: { line: number; state: Awaited<ReturnType<typeof getHighlightState>> }[] = [];
+
+    for (const ln of [22, 23, 24, 25, 26, 27, 28, 29, 30, 31]) {
+      await moveCursorToLine(page, ln);
+      const state = await getHighlightState(page);
+      results.push({ line: ln, state });
+    }
+
+
+    // Every line within measure 1 must have an active highlight
+    for (const r of results) {
+      expect(r.state.activeId, `Line ${r.line}: expected highlight but got none`).toBeTruthy();
+    }
+  });
+
+  test("cursor on closing tag activates parent measure, not sibling note", async ({ page }) => {
+    // Line 29 in sample.mei is: </layer> inside measure m1
+    // Before the fix, this would activate "n4" (sibling note); after fix, should activate "m1"
+    await moveCursorToLine(page, 29);
+
+    const activeId = await page.evaluate(() => {
+      const el = document.querySelector(".score-active, .score-active-tuplet");
+      return el?.id ?? null;
+    });
+    // Should be the measure element, not a note
+    expect(activeId).toBeTruthy();
+    // Verovio prefixes measure ids, but the element should have class "measure"
+    const isMeasure = await page.evaluate(() => {
+      const el = document.querySelector(".score-active, .score-active-tuplet");
+      return el?.classList.contains("measure") ?? false;
+    });
+    expect(isMeasure).toBe(true);
+  });
+
+  test("active highlight moves when cursor moves to a different note", async ({ page }) => {
+    // Activate n1 (line 25)
+    await moveCursorToLine(page, 25);
+    const firstActiveId = await page.evaluate(() => {
+      return document.querySelector(".score-active")?.id ?? null;
+    });
+    expect(firstActiveId).toBeTruthy();
+
+    // Move to n5 (line 35, in measure 2)
+    await moveCursorToLine(page, 35);
+    const secondActiveId = await page.evaluate(() => {
+      return document.querySelector(".score-active")?.id ?? null;
+    });
+    expect(secondActiveId).toBeTruthy();
+    expect(secondActiveId).not.toBe(firstActiveId);
+
+    // Previous element should no longer be active
+    const firstStillActive = await page.evaluate((id) => {
+      const el = document.getElementById(id!);
+      return el?.classList.contains("score-active") ?? false;
+    }, firstActiveId);
+    expect(firstStillActive).toBe(false);
+  });
+
+  test("hover and active use the same blue hue", async ({ page }) => {
+    // Activate a note via cursor
+    await moveCursorToLine(page, 25);
+
+    const colors = await page.evaluate(() => {
+      const activeEl = document.querySelector(".score-active");
+      if (!activeEl) return null;
+      const activeChild = activeEl.querySelector("*");
+      const activeFill = activeChild ? getComputedStyle(activeChild).fill : null;
+
+      // Hover a different note
+      const notes = document.querySelectorAll("svg g.note");
+      let hoverTarget: Element | null = null;
+      for (const n of notes) {
+        if (!n.classList.contains("score-active")) {
+          hoverTarget = n;
+          break;
+        }
+      }
+      if (!hoverTarget) return null;
+      hoverTarget.dispatchEvent(new MouseEvent("mouseover", { bubbles: true }));
+      const hoverChild = hoverTarget.querySelector("*");
+      const hoverFill = hoverChild ? getComputedStyle(hoverChild).fill : null;
+
+      return { activeFill, hoverFill };
+    });
+
+    expect(colors).not.toBeNull();
+    // Both should contain the blue hue (59, 130, 246)
+    expect(colors!.activeFill).toContain("59, 130, 246");
+    expect(colors!.hoverFill).toContain("59, 130, 246");
+  });
+});
+
 test.describe("Stroke-based element highlights", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/");

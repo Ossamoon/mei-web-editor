@@ -11,8 +11,9 @@ A browser-based editor for [MEI (Music Encoding Initiative)](https://music-encod
 - **Error overlay** -- Invalid XML keeps the last valid score visible with a red semi-transparent overlay
 - **Bidirectional linking**
   - Click a note in the score to jump to the corresponding `xml:id` in the editor
-  - Editor cursor position highlights the corresponding element in the score
-  - Hover over score elements to see a blue highlight
+  - Editor cursor position highlights the corresponding element in the score (dark blue)
+  - Hover over score elements to see a highlight (light blue, same hue as active)
+- **Cursor context** -- Status bar shows the XML element, attribute, and `xml:id` at the cursor position
 - **File I/O** -- Open `.mei`/`.xml` files via button or drag & drop; download with button or Ctrl+S / Cmd+S
 - **Example files** -- Built-in examples selectable from a dropdown:
   - C Major Scale, Chords & Voices, Piano (Grand Staff), Ornaments & Articulations, Melody with Lyrics, Dynamics & Expression, Piano Techniques, Repeats & Structure, Tremolo, Harmony & Special
@@ -50,8 +51,8 @@ pnpm test:e2e      # E2E tests (Playwright, requires chromium)
 pnpm test:coverage # Coverage report
 ```
 
-- Unit/component tests: Vitest + Testing Library (55 tests)
-- E2E tests: Playwright on Chromium (17 tests)
+- Unit/component tests: Vitest + Testing Library (86 tests)
+- E2E tests: Playwright on Chromium (24 tests)
 - Test-first development: new features and bug fixes start with a failing test
 
 ## Deployment

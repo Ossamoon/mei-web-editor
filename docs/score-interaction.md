@@ -136,6 +136,23 @@ Because tupletSpan wraps child notes, the default `score-hover *` rule would col
 
 **Key rule**: never add `:not()` pseudo-classes to the default rule to exclude specific elements. Each `:not()` increases specificity by one class level, causing the default rule to outrank the override rules.
 
+## Unified color scheme
+
+Both hover and active highlights use the same blue hue (Tailwind blue-500: `rgb(59, 130, 246)`), differentiated only by opacity:
+
+| Usage | Hover (lighter) | Active (darker) |
+|-------|-----------------|-----------------|
+| `drop-shadow` | `0.4` | `0.7` |
+| `fill` (non-measure) | `0.5` | `0.85` |
+| `stroke` (hairpin etc.) | `0.5` | `0.85` |
+| Measure overlay rect | `0.06` | `0.12` |
+
+## React.memo and DOM preservation
+
+`ScorePreview` is wrapped in `React.memo`. This is critical because highlights (`score-active`, `score-hover`, overlay rects) are applied by directly manipulating the SVG DOM via `classList` and `insertBefore`. If the component re-renders, `dangerouslySetInnerHTML` reconstructs the entire SVG DOM, destroying these manual modifications. When `highlightedId` has not changed (e.g. cursor moves within the same measure), the `useEffect` does not re-fire, so the highlight is lost permanently.
+
+`React.memo` ensures re-renders only happen when props actually change (`svgContent`, `hasError`, `highlightedId`, `onNoteClick`).
+
 ## Adding a new interactive element
 
 1. **Add the class name** to `INTERACTIVE_CLASSES` in `ScorePreview.tsx`
@@ -160,4 +177,12 @@ The `Stroke-based element highlights` test suite in `e2e/editor.spec.ts` verifie
 - `octave` hover: `fill` is `none` on child polyline
 - `tupletSpan` hover: child notes are not colored, bracket `fill` is `none`
 
-These tests use `getComputedStyle` in a real browser to catch CSS specificity regressions that jsdom-based unit tests cannot detect.
+The `Cursor to score active highlight` test suite verifies:
+
+- Cursor on note line → `score-active` class applied
+- Cursor on closing tag → parent measure gets `score-active` (not sibling note)
+- Cursor moves → `score-active` follows to new element
+- Hover and active both use the same blue hue
+- **Highlight persists on every line within a measure** (regression test for `React.memo` / DOM reconstruction issue)
+
+These tests use `getComputedStyle` and DOM class inspection in a real browser to catch CSS specificity regressions and DOM lifecycle issues that jsdom-based unit tests cannot detect.

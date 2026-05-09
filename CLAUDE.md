@@ -36,14 +36,15 @@ src/
 │   ├── MeiEditor.tsx    # CodeMirror 6 wrapper (XML highlighting, lint, search)
 │   ├── ScorePreview.tsx # Verovio SVG display + hover/active highlights
 │   ├── Toolbar.tsx      # File I/O buttons + Examples dropdown
-│   └── StatusBar.tsx    # Validation status + cursor position
+│   └── StatusBar.tsx    # Validation status + cursor position + XML element context
 ├── hooks/
 │   ├── useVerovio.ts    # Verovio WASM init + MEI→SVG rendering
 │   ├── useKeyboardShortcut.ts  # Ctrl/Cmd+key handler
 │   └── useDragAndDrop.ts       # Window-level file drop handler
 ├── utils/
 │   ├── validate.ts      # saxes-based XML well-formedness check (line/col errors)
-│   └── findXmlId.ts     # Find xml:id at cursor position (walks up parent elements)
+│   ├── findXmlId.ts     # saxes-based xml:id lookup at cursor line (cached line→id map)
+│   └── findElement.ts   # saxes-based element context at cursor (element, attribute, text, xmlId)
 ├── assets/              # Sample .mei files (9 examples)
 └── test/
     └── setup.ts         # Vitest global mocks (ResizeObserver, Verovio, URL API)
@@ -57,7 +58,8 @@ docs/
 
 - **Debounced rendering**: Editor changes trigger validation + Verovio render after 300ms
 - **Error handling**: Invalid XML keeps last valid score visible with red overlay; saxes errors shown as CodeMirror lint diagnostics (squiggly lines + hover tooltips)
-- **Bidirectional sync**: Editor cursor → score highlight (orange); score click → editor jump; score hover → blue highlight. See `docs/score-interaction.md` for CSS highlight strategy details
+- **Bidirectional sync**: Editor cursor → score highlight (dark blue); score click → editor jump; score hover → light blue highlight. Both use the same blue hue with different opacities. See `docs/score-interaction.md` for details
+- **ScorePreview memo**: `ScorePreview` is wrapped in `React.memo` to prevent `dangerouslySetInnerHTML` from reconstructing the SVG DOM on unrelated state changes, which would destroy manually applied CSS classes (`score-active`, overlay rects)
 - **Verovio mock in tests**: `src/test/setup.ts` mocks `verovio/wasm` and `verovio/esm` globally for jsdom environment
 - **E2E editor access**: In dev mode, `window.__editorView` exposes CodeMirror EditorView for Playwright tests
 - **Test file exclusion**: `tsconfig.app.json` excludes `*.test.ts(x)` and `src/test/` from type-checking build
@@ -66,7 +68,7 @@ docs/
 
 **テストファーストで開発する。** 新機能の追加やバグ修正を行う際は、まず期待する挙動をテストとして記述し、テストが失敗することを確認してから実装に入る。
 
-- **Unit tests** (`*.test.ts`): Pure logic (validate, findXmlId, examples)
+- **Unit tests** (`*.test.ts`): Pure logic (validate, findXmlId, findElement, examples)
 - **Component tests** (`*.test.tsx`): React components with Testing Library (StatusBar, Toolbar, ScorePreview)
 - **Hook tests**: Custom hooks with `renderHook` (useKeyboardShortcut, useDragAndDrop)
 - **E2E** (`e2e/`): Full browser flow with Playwright (initial render, editing, error states, hover/highlight, file download, example selection)
