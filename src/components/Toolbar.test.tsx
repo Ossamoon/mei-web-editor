@@ -38,16 +38,16 @@ describe("Toolbar", () => {
     render(<Toolbar {...defaultProps} />);
 
     // Dropdown should not be visible initially
-    expect(screen.queryByText("C Major Scale")).not.toBeInTheDocument();
+    expect(screen.queryByText("Basic Notation")).not.toBeInTheDocument();
 
     // Click Examples to open
     await user.click(screen.getByText(/Examples/));
-    expect(screen.getByText("C Major Scale")).toBeInTheDocument();
+    expect(screen.getByText("Basic Notation")).toBeInTheDocument();
     expect(screen.getByText("Chords & Voices")).toBeInTheDocument();
 
     // Click Examples again to close
     await user.click(screen.getByText(/Examples/));
-    expect(screen.queryByText("C Major Scale")).not.toBeInTheDocument();
+    expect(screen.queryByText("Basic Notation")).not.toBeInTheDocument();
   });
 
   it("calls onFileOpen when an example is selected", async () => {
@@ -55,7 +55,7 @@ describe("Toolbar", () => {
     render(<Toolbar {...defaultProps} />);
 
     await user.click(screen.getByText(/Examples/));
-    await user.click(screen.getByText("C Major Scale"));
+    await user.click(screen.getByText("Basic Notation"));
 
     expect(defaultProps.onFileOpen).toHaveBeenCalledOnce();
     const [content, fileName] = defaultProps.onFileOpen.mock.calls[0];
@@ -68,7 +68,7 @@ describe("Toolbar", () => {
     render(<Toolbar {...defaultProps} />);
 
     await user.click(screen.getByText(/Examples/));
-    await user.click(screen.getByText("C Major Scale"));
+    await user.click(screen.getByText("Basic Notation"));
 
     expect(screen.queryByText("Chords & Voices")).not.toBeInTheDocument();
   });

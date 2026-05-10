@@ -15,87 +15,272 @@
         <score>
           <scoreDef>
             <staffGrp>
-              <staffDef n="1" lines="5" clef.shape="G" clef.line="2" meter.count="3" meter.unit="4" keysig="1f" />
+              <staffDef n="1" lines="5" clef.shape="G" clef.line="2" meter.count="3" meter.unit="4" keysig="1s" />
             </staffGrp>
           </scoreDef>
           <section>
+            <!-- Amazing Grace (John Newton, 1779) — Public Domain -->
+            <!-- Melody from ABC notation (K:G, 3/4) -->
+            <!-- Verse 1: "Amazing grace! How sweet the sound, that saved a wretch like me. -->
+            <!--           I once was lost, but now am found, was blind, but now I see." -->
+
+            <!-- Pickup (anacrusis): D quarter -->
+            <measure n="0" xml:id="m0" metcon="false">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n1" dur="4" oct="4" pname="d">
+                    <verse n="1"><syl wordpos="i" con="d">A-</syl></verse>
+                  </note>
+                </layer>
+              </staff>
+            </measure>
+
+            <!-- G half, [B A G] triplet | "maz-ing" -->
             <measure n="1" xml:id="m1">
               <staff n="1">
                 <layer n="1">
-                  <note xml:id="n1" dur="4" oct="4" pname="f">
-                    <verse n="1"><syl>Twin</syl></verse>
+                  <note xml:id="n2" dur="2" oct="4" pname="g">
+                    <verse n="1"><syl wordpos="m" con="d">-maz-</syl></verse>
                   </note>
-                  <note xml:id="n2" dur="4" oct="4" pname="a">
-                    <verse n="1"><syl con="d" wordpos="i">kle,</syl></verse>
-                  </note>
-                  <note xml:id="n3" dur="4" oct="4" pname="a">
-                    <verse n="1"><syl>twin</syl></verse>
-                  </note>
+                  <tuplet num="3" numbase="2">
+                    <beam>
+                      <note xml:id="n3" dur="8" oct="4" pname="b">
+                        <verse n="1"><syl wordpos="t">-ing</syl></verse>
+                      </note>
+                      <note xml:id="n4" dur="8" oct="4" pname="a" />
+                      <note xml:id="n5" dur="8" oct="4" pname="g" />
+                    </beam>
+                  </tuplet>
                 </layer>
               </staff>
             </measure>
+
+            <!-- B half, B eighth, A eighth | "grace, how" -->
             <measure n="2" xml:id="m2">
               <staff n="1">
                 <layer n="1">
-                  <note xml:id="n4" dur="4" oct="4" pname="b" accid.ges="f">
-                    <verse n="1"><syl con="d" wordpos="i">kle,</syl></verse>
+                  <note xml:id="n6" dur="2" oct="4" pname="b">
+                    <verse n="1"><syl>grace,</syl></verse>
                   </note>
-                  <note xml:id="n5" dur="4" oct="4" pname="b" accid.ges="f">
-                    <verse n="1"><syl con="d" wordpos="m">lit</syl></verse>
-                  </note>
-                  <note xml:id="n6" dur="4" oct="4" pname="a">
-                    <verse n="1"><syl wordpos="t">tle</syl></verse>
-                  </note>
+                  <beam>
+                    <note xml:id="n7" dur="8" oct="4" pname="b">
+                      <verse n="1"><syl con="u">how</syl></verse>
+                    </note>
+                    <note xml:id="n8" dur="8" oct="4" pname="a" />
+                  </beam>
                 </layer>
               </staff>
             </measure>
+
+            <!-- G half, E quarter | "sweet the" -->
             <measure n="3" xml:id="m3">
               <staff n="1">
                 <layer n="1">
-                  <note xml:id="n7" dur="4" oct="4" pname="g">
-                    <verse n="1"><syl>star,</syl></verse>
+                  <note xml:id="n9" dur="2" oct="4" pname="g">
+                    <verse n="1"><syl>sweet</syl></verse>
                   </note>
-                  <note xml:id="n8" dur="4" oct="4" pname="g" />
-                  <note xml:id="n9" dur="4" oct="4" pname="f">
-                    <verse n="1"><syl>how</syl></verse>
+                  <note xml:id="n10" dur="4" oct="4" pname="e">
+                    <verse n="1"><syl>the</syl></verse>
                   </note>
                 </layer>
               </staff>
             </measure>
+
+            <!-- D half, D quarter | "sound That" (straddles line 1→2 break) -->
             <measure n="4" xml:id="m4">
               <staff n="1">
                 <layer n="1">
-                  <note xml:id="n10" dur="4" oct="4" pname="e">
-                    <verse n="1"><syl>I</syl></verse>
-                  </note>
-                  <note xml:id="n11" dur="4" oct="4" pname="e">
-                    <verse n="1"><syl con="d" wordpos="i">won</syl></verse>
+                  <note xml:id="n11" dur="2" oct="4" pname="d">
+                    <verse n="1"><syl>sound</syl></verse>
                   </note>
                   <note xml:id="n12" dur="4" oct="4" pname="d">
-                    <verse n="1"><syl wordpos="t">der</syl></verse>
+                    <verse n="1"><syl>That</syl></verse>
                   </note>
                 </layer>
               </staff>
             </measure>
+
+            <!-- G half, [B A G] triplet | "saved a" -->
             <measure n="5" xml:id="m5">
               <staff n="1">
                 <layer n="1">
-                  <note xml:id="n13" dur="4" oct="4" pname="c">
-                    <verse n="1"><syl>what</syl></verse>
+                  <note xml:id="n13" dur="2" oct="4" pname="g">
+                    <verse n="1"><syl>saved</syl></verse>
                   </note>
-                  <note xml:id="n14" dur="4" oct="4" pname="c">
-                    <verse n="1"><syl>you</syl></verse>
-                  </note>
-                  <rest xml:id="r1" dur="4" />
+                  <tuplet num="3" numbase="2">
+                    <beam>
+                      <note xml:id="n14" dur="8" oct="4" pname="b">
+                        <verse n="1"><syl con="u">a</syl></verse>
+                      </note>
+                      <note xml:id="n15" dur="8" oct="4" pname="a" />
+                      <note xml:id="n16" dur="8" oct="4" pname="g" />
+                    </beam>
+                  </tuplet>
                 </layer>
               </staff>
             </measure>
-            <measure n="6" xml:id="m6" right="end">
+
+            <!-- B half, A eighth, B eighth | "wretch like" -->
+            <measure n="6" xml:id="m6">
               <staff n="1">
                 <layer n="1">
-                  <note xml:id="n15" dur="2." oct="4" pname="f">
-                    <verse n="1"><syl>are.</syl></verse>
+                  <note xml:id="n17" dur="2" oct="4" pname="b">
+                    <verse n="1"><syl>wretch</syl></verse>
                   </note>
+                  <beam>
+                    <note xml:id="n18" dur="8" oct="4" pname="a">
+                      <verse n="1"><syl con="u">like</syl></verse>
+                    </note>
+                    <note xml:id="n19" dur="8" oct="4" pname="b" />
+                  </beam>
+                </layer>
+              </staff>
+            </measure>
+
+            <!-- D5 dotted-half (tied) | "me." -->
+            <measure n="7" xml:id="m7">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n20" dur="2" dots="1" oct="5" pname="d" tie="i">
+                    <verse n="1"><syl con="u">me.</syl></verse>
+                  </note>
+                </layer>
+              </staff>
+            </measure>
+
+            <!-- D5 half (tied), B4 eighth, D5 eighth | "—  I" (straddles line 2→3 break) -->
+            <measure n="8" xml:id="m8">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n21" dur="2" oct="5" pname="d" tie="t" />
+                  <beam>
+                    <note xml:id="n22" dur="8" oct="4" pname="b">
+                      <verse n="1"><syl con="u">I</syl></verse>
+                    </note>
+                    <note xml:id="n23" dur="8" oct="5" pname="d" />
+                  </beam>
+                </layer>
+              </staff>
+            </measure>
+
+            <!-- D5 half, [B A G] triplet | "once was" -->
+            <measure n="9" xml:id="m9">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n24" dur="2" oct="5" pname="d">
+                    <verse n="1"><syl>once</syl></verse>
+                  </note>
+                  <tuplet num="3" numbase="2">
+                    <beam>
+                      <note xml:id="n25" dur="8" oct="4" pname="b">
+                        <verse n="1"><syl con="u">was</syl></verse>
+                      </note>
+                      <note xml:id="n26" dur="8" oct="4" pname="a" />
+                      <note xml:id="n27" dur="8" oct="4" pname="g" />
+                    </beam>
+                  </tuplet>
+                </layer>
+              </staff>
+            </measure>
+
+            <!-- B half, B eighth, A eighth | "lost, but" -->
+            <measure n="10" xml:id="m10">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n28" dur="2" oct="4" pname="b">
+                    <verse n="1"><syl>lost,</syl></verse>
+                  </note>
+                  <beam>
+                    <note xml:id="n29" dur="8" oct="4" pname="b">
+                      <verse n="1"><syl con="u">but</syl></verse>
+                    </note>
+                    <note xml:id="n30" dur="8" oct="4" pname="a" />
+                  </beam>
+                </layer>
+              </staff>
+            </measure>
+
+            <!-- G half, E quarter | "now am" -->
+            <measure n="11" xml:id="m11">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n31" dur="2" oct="4" pname="g">
+                    <verse n="1"><syl>now</syl></verse>
+                  </note>
+                  <note xml:id="n32" dur="4" oct="4" pname="e">
+                    <verse n="1"><syl>am</syl></verse>
+                  </note>
+                </layer>
+              </staff>
+            </measure>
+
+            <!-- D half, D quarter | "found, Was" (straddles line 3→4 break) -->
+            <measure n="12" xml:id="m12">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n33" dur="2" oct="4" pname="d">
+                    <verse n="1"><syl>found,</syl></verse>
+                  </note>
+                  <note xml:id="n34" dur="4" oct="4" pname="d">
+                    <verse n="1"><syl>Was</syl></verse>
+                  </note>
+                </layer>
+              </staff>
+            </measure>
+
+            <!-- G half, [B A G] triplet | "blind, but" -->
+            <measure n="13" xml:id="m13">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n35" dur="2" oct="4" pname="g">
+                    <verse n="1"><syl>blind,</syl></verse>
+                  </note>
+                  <tuplet num="3" numbase="2">
+                    <beam>
+                      <note xml:id="n36" dur="8" oct="4" pname="b">
+                        <verse n="1"><syl con="u">but</syl></verse>
+                      </note>
+                      <note xml:id="n37" dur="8" oct="4" pname="a" />
+                      <note xml:id="n38" dur="8" oct="4" pname="g" />
+                    </beam>
+                  </tuplet>
+                </layer>
+              </staff>
+            </measure>
+
+            <!-- B half, B eighth, A eighth | "now I" -->
+            <measure n="14" xml:id="m14">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n39" dur="2" oct="4" pname="b">
+                    <verse n="1"><syl>now</syl></verse>
+                  </note>
+                  <beam>
+                    <note xml:id="n40" dur="8" oct="4" pname="b">
+                      <verse n="1"><syl con="u">I</syl></verse>
+                    </note>
+                    <note xml:id="n41" dur="8" oct="4" pname="a" />
+                  </beam>
+                </layer>
+              </staff>
+            </measure>
+
+            <!-- G dotted-half (tied) | "see." -->
+            <measure n="15" xml:id="m15">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n42" dur="2" dots="1" oct="4" pname="g" tie="i">
+                    <verse n="1"><syl con="u">see.</syl></verse>
+                  </note>
+                </layer>
+              </staff>
+            </measure>
+
+            <!-- G half (tied, incomplete final measure balances pickup) -->
+            <measure n="16" xml:id="m16" metcon="false" right="end">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n43" dur="2" oct="4" pname="g" tie="t" />
                 </layer>
               </staff>
             </measure>

@@ -19,67 +19,158 @@
             </staffGrp>
           </scoreDef>
           <section>
-            <!-- Measure 1: reh, repeatMark (segno) -->
-            <measure n="1" xml:id="m1">
+            <!-- Section A (m1-4): with repeat barlines -->
+            <measure n="1" xml:id="m1" right="rptstart">
               <staff n="1">
                 <layer n="1">
                   <note xml:id="n1" dur="4" oct="4" pname="c" />
-                  <note xml:id="n2" dur="4" oct="4" pname="d" />
-                  <note xml:id="n3" dur="4" oct="4" pname="e" />
-                  <note xml:id="n4" dur="4" oct="4" pname="f" />
+                  <note xml:id="n2" dur="4" oct="4" pname="e" />
+                  <note xml:id="n3" dur="4" oct="4" pname="g" />
+                  <note xml:id="n4" dur="4" oct="5" pname="c" />
                 </layer>
               </staff>
               <reh xml:id="reh1" startid="#n1">A</reh>
-              <repeatMark xml:id="rm1" startid="#n1" func="segno" />
             </measure>
-            <!-- Measure 2: beatRpt -->
             <measure n="2" xml:id="m2">
               <staff n="1">
                 <layer n="1">
-                  <note xml:id="n5" dur="4" oct="4" pname="g" />
-                  <note xml:id="n6" dur="4" oct="4" pname="a" />
-                  <beatRpt xml:id="brpt1" />
+                  <note xml:id="n5" dur="4" oct="5" pname="d" />
+                  <note xml:id="n6" dur="4" oct="5" pname="c" />
+                  <note xml:id="n7" dur="4" oct="4" pname="b" />
+                  <note xml:id="n8" dur="4" oct="4" pname="a" />
                 </layer>
               </staff>
             </measure>
-            <!-- Measure 3: mRest -->
             <measure n="3" xml:id="m3">
               <staff n="1">
                 <layer n="1">
-                  <mRest xml:id="mr1" />
+                  <note xml:id="n9" dur="4" oct="4" pname="g" />
+                  <note xml:id="n10" dur="4" oct="4" pname="a" />
+                  <note xml:id="n11" dur="4" oct="4" pname="b" />
+                  <note xml:id="n12" dur="4" oct="5" pname="c" />
                 </layer>
               </staff>
             </measure>
-            <!-- Measure 4: halfmRpt -->
-            <measure n="4" xml:id="m4">
+            <measure n="4" xml:id="m4" right="rptend">
               <staff n="1">
                 <layer n="1">
-                  <note xml:id="n7" dur="4" oct="4" pname="c" />
-                  <note xml:id="n8" dur="4" oct="4" pname="d" />
+                  <note xml:id="n13" dur="2" oct="4" pname="g" />
+                  <note xml:id="n14" dur="2" oct="4" pname="e" />
+                </layer>
+              </staff>
+            </measure>
+            <!-- Section B (m5-8): segno, halfmRpt -->
+            <measure n="5" xml:id="m5">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n15" dur="4" oct="4" pname="f" />
+                  <note xml:id="n16" dur="4" oct="4" pname="a" />
+                  <note xml:id="n17" dur="4" oct="5" pname="c" />
+                  <note xml:id="n18" dur="4" oct="4" pname="a" />
+                </layer>
+              </staff>
+              <reh xml:id="reh2" startid="#n15">B</reh>
+              <repeatMark xml:id="rm1" startid="#n15" func="segno" />
+            </measure>
+            <measure n="6" xml:id="m6">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n19" dur="4" oct="4" pname="g" />
+                  <note xml:id="n20" dur="4" oct="4" pname="b" />
+                  <note xml:id="n21" dur="4" oct="5" pname="d" />
+                  <note xml:id="n22" dur="4" oct="4" pname="b" />
+                </layer>
+              </staff>
+            </measure>
+            <measure n="7" xml:id="m7">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n23" dur="4" oct="4" pname="a" />
+                  <note xml:id="n24" dur="4" oct="4" pname="g" />
                   <halfmRpt xml:id="hmrpt1" />
                 </layer>
               </staff>
             </measure>
-            <!-- Measure 5: mRpt -->
-            <measure n="5" xml:id="m5">
+            <measure n="8" xml:id="m8">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n25" dur="2" oct="4" pname="f" />
+                  <note xml:id="n26" dur="2" oct="4" pname="e" />
+                </layer>
+              </staff>
+            </measure>
+            <!-- Section C (m9-12): mRpt, mRest, beatRpt -->
+            <measure n="9" xml:id="m9">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n27" dur="4" oct="4" pname="c" />
+                  <note xml:id="n28" dur="4" oct="4" pname="d" />
+                  <note xml:id="n29" dur="4" oct="4" pname="e" />
+                  <note xml:id="n30" dur="4" oct="4" pname="f" />
+                </layer>
+              </staff>
+            </measure>
+            <measure n="10" xml:id="m10">
               <staff n="1">
                 <layer n="1">
                   <mRpt xml:id="mrpt1" />
                 </layer>
               </staff>
             </measure>
-            <!-- Measure 6: repeatMark (D.S. al Coda) -->
-            <measure n="6" xml:id="m6" right="end">
+            <measure n="11" xml:id="m11">
               <staff n="1">
                 <layer n="1">
-                  <note xml:id="n9" dur="4" oct="5" pname="c" />
-                  <note xml:id="n10" dur="4" oct="4" pname="b" />
-                  <note xml:id="n11" dur="4" oct="4" pname="a" />
-                  <note xml:id="n12" dur="4" oct="4" pname="g" />
+                  <mRest xml:id="mr1" />
                 </layer>
               </staff>
-              <reh xml:id="reh2" startid="#n9">B</reh>
-              <repeatMark xml:id="rm2" startid="#n12" func="daCapo" />
+            </measure>
+            <measure n="12" xml:id="m12">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n31" dur="4" oct="4" pname="g" />
+                  <note xml:id="n32" dur="4" oct="4" pname="a" />
+                  <beatRpt xml:id="brpt1" />
+                </layer>
+              </staff>
+            </measure>
+            <!-- Section D (m13-16): closing, D.S. -->
+            <measure n="13" xml:id="m13">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n33" dur="4" oct="5" pname="c" />
+                  <note xml:id="n34" dur="4" oct="4" pname="b" />
+                  <note xml:id="n35" dur="4" oct="4" pname="a" />
+                  <note xml:id="n36" dur="4" oct="4" pname="g" />
+                </layer>
+              </staff>
+            </measure>
+            <measure n="14" xml:id="m14">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n37" dur="4" oct="4" pname="f" />
+                  <note xml:id="n38" dur="4" oct="4" pname="e" />
+                  <note xml:id="n39" dur="4" oct="4" pname="d" />
+                  <note xml:id="n40" dur="4" oct="4" pname="c" />
+                </layer>
+              </staff>
+            </measure>
+            <measure n="15" xml:id="m15">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n41" dur="4" oct="4" pname="d" />
+                  <note xml:id="n42" dur="4" oct="4" pname="e" />
+                  <note xml:id="n43" dur="4" oct="4" pname="f" />
+                  <note xml:id="n44" dur="4" oct="4" pname="g" />
+                </layer>
+              </staff>
+            </measure>
+            <measure n="16" xml:id="m16" right="end">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n45" dur="1" oct="5" pname="c" />
+                </layer>
+              </staff>
+              <repeatMark xml:id="rm2" startid="#n45" func="dalSegno" />
             </measure>
           </section>
         </score>

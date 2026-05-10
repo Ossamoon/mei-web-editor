@@ -19,53 +19,98 @@
             </staffGrp>
           </scoreDef>
           <section>
+            <!-- m1-2: Slurred phrase with grace notes -->
             <measure n="1" xml:id="m1">
               <staff n="1">
                 <layer n="1">
                   <note xml:id="n1" dur="4" oct="4" pname="b" accid.ges="f" />
-                  <note xml:id="n2" dur="8" oct="5" pname="c" />
-                  <note xml:id="n3" dur="8" oct="5" pname="d" />
-                  <note xml:id="n4" dur="4" oct="5" pname="e" accid.ges="f" />
-                  <note xml:id="n5" dur="4" oct="5" pname="d" />
+                  <note xml:id="n2" dur="4" oct="5" pname="d" />
+                  <note xml:id="n3" dur="4" oct="5" pname="c" />
+                  <note xml:id="n4" dur="4" oct="4" pname="b" accid.ges="f" />
                 </layer>
               </staff>
-              <slur xml:id="s1" startid="#n1" endid="#n3" />
-              <fermata xml:id="f1" startid="#n5" place="above" />
+              <slur xml:id="s1" startid="#n1" endid="#n4" />
             </measure>
             <measure n="2" xml:id="m2">
               <staff n="1">
                 <layer n="1">
-                  <note xml:id="n6" dur="4" oct="5" pname="c" artic="stacc" />
-                  <note xml:id="n7" dur="4" oct="4" pname="b" accid.ges="f" artic="stacc" />
-                  <note xml:id="n8" dur="4" oct="4" pname="a" accid="n" artic="ten" />
-                  <note xml:id="n9" dur="4" oct="4" pname="b" accid.ges="f" artic="accent" />
+                  <note xml:id="n5" dur="4" oct="4" pname="a" accid="n" grace="unacc" />
+                  <note xml:id="n6" dur="4" oct="4" pname="b" accid.ges="f" />
+                  <note xml:id="n7" dur="4" oct="5" pname="c" />
+                  <note xml:id="n8" dur="2" oct="4" pname="b" accid.ges="f" />
                 </layer>
               </staff>
-              <trill xml:id="t1" startid="#n6" place="above" />
+              <slur xml:id="s2" startid="#n5" endid="#n6" />
             </measure>
+            <!-- m3-4: Trill and articulations -->
             <measure n="3" xml:id="m3">
               <staff n="1">
                 <layer n="1">
-                  <beam>
-                    <note xml:id="n10" dur="8" oct="4" pname="g" />
-                    <note xml:id="n11" dur="8" oct="4" pname="a" accid="n" />
-                    <note xml:id="n12" dur="8" oct="4" pname="b" accid.ges="f" />
-                    <note xml:id="n13" dur="8" oct="5" pname="c" />
-                  </beam>
-                  <note xml:id="n14" dur="4" oct="5" pname="d" />
-                  <note xml:id="n15" dur="4" oct="5" pname="e" accid.ges="f" />
+                  <note xml:id="n9" dur="2" oct="5" pname="c" />
+                  <note xml:id="n10" dur="4" oct="4" pname="b" accid.ges="f" artic="stacc" />
+                  <note xml:id="n11" dur="4" oct="4" pname="a" accid="n" artic="stacc" />
                 </layer>
               </staff>
-              <turn xml:id="tu1" startid="#n14" place="above" />
-              <slur xml:id="s2" startid="#n14" endid="#n15" />
+              <trill xml:id="t1" startid="#n9" place="above" />
             </measure>
-            <measure n="4" xml:id="m4" right="end">
+            <measure n="4" xml:id="m4">
               <staff n="1">
                 <layer n="1">
-                  <note xml:id="n16" dur="1" oct="4" pname="b" accid.ges="f" />
+                  <note xml:id="n12" dur="4" oct="4" pname="g" artic="ten" />
+                  <note xml:id="n13" dur="4" oct="4" pname="f" artic="ten" />
+                  <note xml:id="n14" dur="2" oct="4" pname="e" accid.ges="f" />
                 </layer>
               </staff>
-              <fermata xml:id="f2" startid="#n16" place="above" />
+              <slur xml:id="s3" startid="#n12" endid="#n14" />
+            </measure>
+            <!-- m5-6: Turn, mordent, accents -->
+            <measure n="5" xml:id="m5">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n15" dur="4" oct="4" pname="f" />
+                  <note xml:id="n16" dur="4" oct="4" pname="g" />
+                  <beam>
+                    <note xml:id="n17" dur="8" oct="4" pname="a" accid="n" artic="accent" />
+                    <note xml:id="n18" dur="8" oct="4" pname="b" accid.ges="f" />
+                  </beam>
+                  <note xml:id="n19" dur="4" oct="5" pname="c" artic="marc" />
+                </layer>
+              </staff>
+              <turn xml:id="tu1" startid="#n16" place="above" />
+            </measure>
+            <measure n="6" xml:id="m6">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n20" dur="4" oct="5" pname="d" />
+                  <note xml:id="n21" dur="4" oct="5" pname="c" />
+                  <beam>
+                    <note xml:id="n22" dur="8" oct="4" pname="b" accid.ges="f" />
+                    <note xml:id="n23" dur="8" oct="4" pname="a" accid="n" />
+                  </beam>
+                  <note xml:id="n24" dur="4" oct="4" pname="g" />
+                </layer>
+              </staff>
+              <mordent xml:id="mord1" startid="#n20" place="above" form="lower" />
+            </measure>
+            <!-- m7-8: Final phrase with fermata -->
+            <measure n="7" xml:id="m7">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n25" dur="4" oct="4" pname="f" />
+                  <note xml:id="n26" dur="4" oct="4" pname="g" />
+                  <note xml:id="n27" dur="4" oct="4" pname="a" accid="n" />
+                  <note xml:id="n28" dur="4" oct="4" pname="f" />
+                </layer>
+              </staff>
+              <slur xml:id="s4" startid="#n25" endid="#n28" />
+            </measure>
+            <measure n="8" xml:id="m8" right="end">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n29" dur="1" oct="4" pname="b" accid.ges="f" />
+                </layer>
+              </staff>
+              <fermata xml:id="f1" startid="#n29" place="above" />
             </measure>
           </section>
         </score>

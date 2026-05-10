@@ -15,7 +15,7 @@ export interface ExampleEntry {
 }
 
 export const examples: ExampleEntry[] = [
-  { name: "C Major Scale", fileName: "sample.mei", content: sampleMei },
+  { name: "Basic Notation", fileName: "sample.mei", content: sampleMei },
   { name: "Chords & Voices", fileName: "example-chords.mei", content: chordsMei },
   { name: "Piano (Grand Staff)", fileName: "example-piano.mei", content: pianoMei },
   { name: "Ornaments & Articulations", fileName: "example-ornaments.mei", content: ornamentsMei },

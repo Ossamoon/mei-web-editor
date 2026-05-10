@@ -20,6 +20,7 @@
             </staffGrp>
           </scoreDef>
           <section>
+            <!-- A phrase (m1-4): waltz-style -->
             <measure n="1" xml:id="m1">
               <staff n="1">
                 <layer n="1">
@@ -30,20 +31,24 @@
               </staff>
               <staff n="2">
                 <layer n="1">
-                  <note xml:id="ln1" dur="2" oct="3" pname="g" />
-                  <note xml:id="ln2" dur="4" oct="3" pname="f" accid="s" />
+                  <note xml:id="ln1" dur="4" oct="3" pname="g" />
+                  <note xml:id="ln2" dur="4" oct="3" pname="b" />
+                  <note xml:id="ln3" dur="4" oct="3" pname="d" />
                 </layer>
               </staff>
+              <slur xml:id="s1" startid="#rn1" endid="#rn3" />
             </measure>
             <measure n="2" xml:id="m2">
               <staff n="1">
                 <layer n="1">
-                  <note xml:id="rn4" dur="2." oct="4" pname="g" />
+                  <note xml:id="rn4" dur="2" dots="1" oct="4" pname="g" />
                 </layer>
               </staff>
               <staff n="2">
                 <layer n="1">
-                  <note xml:id="ln3" dur="2." oct="3" pname="g" />
+                  <note xml:id="ln4" dur="4" oct="3" pname="g" />
+                  <note xml:id="ln5" dur="4" oct="3" pname="b" />
+                  <note xml:id="ln6" dur="4" oct="3" pname="d" />
                 </layer>
               </staff>
             </measure>
@@ -57,21 +62,87 @@
               </staff>
               <staff n="2">
                 <layer n="1">
-                  <note xml:id="ln4" dur="4" oct="3" pname="f" accid="s" />
-                  <note xml:id="ln5" dur="4" oct="3" pname="g" />
-                  <note xml:id="ln6" dur="4" oct="3" pname="a" />
+                  <note xml:id="ln7" dur="4" oct="3" pname="d" />
+                  <note xml:id="ln8" dur="4" oct="3" pname="f" />
+                  <note xml:id="ln9" dur="4" oct="3" pname="a" />
                 </layer>
               </staff>
+              <slur xml:id="s2" startid="#rn5" endid="#rn7" />
             </measure>
-            <measure n="4" xml:id="m4" right="end">
+            <measure n="4" xml:id="m4">
               <staff n="1">
                 <layer n="1">
-                  <note xml:id="rn8" dur="2." oct="4" pname="b" />
+                  <note xml:id="rn8" dur="2" dots="1" oct="4" pname="b" />
                 </layer>
               </staff>
               <staff n="2">
                 <layer n="1">
-                  <note xml:id="ln7" dur="2." oct="3" pname="g" />
+                  <note xml:id="ln10" dur="4" oct="3" pname="g" />
+                  <note xml:id="ln11" dur="4" oct="3" pname="b" />
+                  <note xml:id="ln12" dur="4" oct="3" pname="d" />
+                </layer>
+              </staff>
+            </measure>
+            <!-- A' phrase (m5-8): similar start, different ending -->
+            <measure n="5" xml:id="m5">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="rn9" dur="4" oct="5" pname="d" />
+                  <note xml:id="rn10" dur="4" oct="5" pname="c" />
+                  <note xml:id="rn11" dur="4" oct="4" pname="b" />
+                </layer>
+              </staff>
+              <staff n="2">
+                <layer n="1">
+                  <note xml:id="ln13" dur="4" oct="3" pname="g" />
+                  <note xml:id="ln14" dur="4" oct="3" pname="b" />
+                  <note xml:id="ln15" dur="4" oct="3" pname="d" />
+                </layer>
+              </staff>
+              <slur xml:id="s3" startid="#rn9" endid="#rn11" />
+            </measure>
+            <measure n="6" xml:id="m6">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="rn12" dur="4" oct="4" pname="a" />
+                  <note xml:id="rn13" dur="4" oct="4" pname="g" />
+                  <note xml:id="rn14" dur="4" oct="4" pname="a" />
+                </layer>
+              </staff>
+              <staff n="2">
+                <layer n="1">
+                  <note xml:id="ln16" dur="4" oct="3" pname="d" />
+                  <note xml:id="ln17" dur="4" oct="3" pname="f" />
+                  <note xml:id="ln18" dur="4" oct="3" pname="a" />
+                </layer>
+              </staff>
+            </measure>
+            <measure n="7" xml:id="m7">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="rn15" dur="4" oct="4" pname="b" />
+                  <note xml:id="rn16" dur="4" oct="4" pname="a" />
+                  <note xml:id="rn17" dur="4" oct="4" pname="f" />
+                </layer>
+              </staff>
+              <staff n="2">
+                <layer n="1">
+                  <note xml:id="ln19" dur="4" oct="3" pname="d" />
+                  <note xml:id="ln20" dur="4" oct="3" pname="f" />
+                  <note xml:id="ln21" dur="4" oct="3" pname="d" />
+                </layer>
+              </staff>
+              <slur xml:id="s4" startid="#rn15" endid="#rn17" />
+            </measure>
+            <measure n="8" xml:id="m8" right="end">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="rn18" dur="2" dots="1" oct="4" pname="g" />
+                </layer>
+              </staff>
+              <staff n="2">
+                <layer n="1">
+                  <note xml:id="ln22" dur="2" dots="1" oct="3" pname="g" />
                 </layer>
               </staff>
             </measure>

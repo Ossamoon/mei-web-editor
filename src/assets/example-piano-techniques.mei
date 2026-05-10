@@ -15,72 +15,164 @@
         <score>
           <scoreDef>
             <staffGrp symbol="brace" bar.thru="true">
-              <staffDef n="1" lines="5" clef.shape="G" clef.line="2" meter.count="4" meter.unit="4" keysig="0" />
-              <staffDef n="2" lines="5" clef.shape="F" clef.line="4" meter.count="4" meter.unit="4" keysig="0" />
+              <staffDef n="1" lines="5" clef.shape="G" clef.line="2" meter.count="4" meter.unit="4" keysig="4f" />
+              <staffDef n="2" lines="5" clef.shape="F" clef.line="4" meter.count="4" meter.unit="4" keysig="4f" />
             </staffGrp>
           </scoreDef>
           <section>
-            <!-- Measure 1: arpeg, mordent, fing -->
+            <!-- m1-2: Arpeggiated chords with pedal -->
             <measure n="1" xml:id="m1">
               <staff n="1">
                 <layer n="1">
                   <chord xml:id="ch1" dur="2" stem.dir="up">
-                    <note xml:id="n1" oct="4" pname="c" />
-                    <note xml:id="n2" oct="4" pname="e" />
-                    <note xml:id="n3" oct="4" pname="g" />
+                    <note xml:id="n1" oct="4" pname="a" accid.ges="f" />
+                    <note xml:id="n2" oct="5" pname="c" />
+                    <note xml:id="n3" oct="5" pname="e" accid.ges="f" />
                   </chord>
-                  <note xml:id="n4" dur="4" oct="5" pname="c" />
-                  <note xml:id="n5" dur="4" oct="4" pname="b" />
+                  <note xml:id="n4" dur="4" oct="5" pname="e" accid.ges="f" />
+                  <note xml:id="n5" dur="4" oct="5" pname="d" accid.ges="f" />
                 </layer>
               </staff>
               <staff n="2">
                 <layer n="1">
-                  <note xml:id="n6" dur="1" oct="3" pname="c" />
+                  <note xml:id="n6" dur="2" oct="3" pname="a" accid.ges="f" />
+                  <note xml:id="n7" dur="2" oct="3" pname="e" accid.ges="f" />
                 </layer>
               </staff>
               <arpeg xml:id="arp1" startid="#ch1" />
-              <mordent xml:id="mord1" startid="#n4" place="above" />
-              <fing xml:id="fg1" startid="#n4" place="above">3</fing>
-              <fing xml:id="fg2" startid="#n5" place="above">2</fing>
+              <pedal xml:id="ped1" startid="#ch1" dir="down" place="below" staff="2" />
             </measure>
-            <!-- Measure 2: pedal, octave -->
             <measure n="2" xml:id="m2">
               <staff n="1">
                 <layer n="1">
-                  <note xml:id="n7" dur="4" oct="5" pname="c" />
-                  <note xml:id="n8" dur="4" oct="5" pname="d" />
-                  <note xml:id="n9" dur="4" oct="5" pname="e" />
-                  <note xml:id="n10" dur="4" oct="5" pname="f" />
+                  <chord xml:id="ch2" dur="2" stem.dir="up">
+                    <note xml:id="n8" oct="4" pname="a" accid.ges="f" />
+                    <note xml:id="n9" oct="5" pname="c" />
+                    <note xml:id="n10" oct="5" pname="e" accid.ges="f" />
+                  </chord>
+                  <note xml:id="n11" dur="2" oct="5" pname="c" />
                 </layer>
               </staff>
               <staff n="2">
                 <layer n="1">
-                  <note xml:id="n11" dur="1" oct="3" pname="g" />
+                  <note xml:id="n12" dur="1" oct="3" pname="a" accid.ges="f" />
                 </layer>
               </staff>
-              <pedal xml:id="ped1" startid="#n7" dir="down" place="below" staff="2" />
-              <octave xml:id="oct1" startid="#n7" endid="#n10" dis="8" dis.place="above" staff="1" />
+              <arpeg xml:id="arp2" startid="#ch2" />
+              <pedal xml:id="ped2" startid="#n11" dir="up" place="below" staff="2" />
             </measure>
-            <!-- Measure 3: gliss, lv -->
-            <measure n="3" xml:id="m3" right="end">
+            <!-- m3-4: Melody with fingering and mordent -->
+            <measure n="3" xml:id="m3">
               <staff n="1">
                 <layer n="1">
-                  <note xml:id="n12" dur="4" oct="4" pname="c" />
-                  <note xml:id="n13" dur="4" oct="5" pname="c" />
-                  <note xml:id="n14" dur="2" oct="5" pname="c" />
+                  <note xml:id="n13" dur="4" oct="5" pname="e" accid.ges="f" />
+                  <note xml:id="n14" dur="4" oct="5" pname="d" accid.ges="f" />
+                  <note xml:id="n15" dur="4" oct="5" pname="c" />
+                  <note xml:id="n16" dur="4" oct="4" pname="b" accid.ges="f" />
                 </layer>
               </staff>
               <staff n="2">
                 <layer n="1">
-                  <chord xml:id="ch2" dur="1">
-                    <note xml:id="n15" oct="3" pname="c" />
-                    <note xml:id="n16" oct="3" pname="g" />
+                  <note xml:id="n17" dur="2" oct="3" pname="a" accid.ges="f" />
+                  <note xml:id="n18" dur="2" oct="3" pname="e" accid.ges="f" />
+                </layer>
+              </staff>
+              <mordent xml:id="mord1" startid="#n13" place="above" />
+              <fing xml:id="fg1" startid="#n13" place="above">4</fing>
+              <fing xml:id="fg2" startid="#n14" place="above">3</fing>
+              <fing xml:id="fg3" startid="#n15" place="above">2</fing>
+              <fing xml:id="fg4" startid="#n16" place="above">1</fing>
+              <pedal xml:id="ped3" startid="#n13" dir="down" place="below" staff="2" />
+            </measure>
+            <measure n="4" xml:id="m4">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n19" dur="2" oct="4" pname="a" accid.ges="f" />
+                  <note xml:id="n20" dur="2" oct="4" pname="b" accid.ges="f" />
+                </layer>
+              </staff>
+              <staff n="2">
+                <layer n="1">
+                  <note xml:id="n21" dur="2" oct="3" pname="d" accid.ges="f" />
+                  <note xml:id="n22" dur="2" oct="3" pname="e" accid.ges="f" />
+                </layer>
+              </staff>
+              <fing xml:id="fg5" startid="#n19" place="above">2</fing>
+              <fing xml:id="fg6" startid="#n20" place="above">3</fing>
+              <pedal xml:id="ped4" startid="#n20" dir="up" place="below" staff="2" />
+            </measure>
+            <!-- m5-6: 8va passage and glissando -->
+            <measure n="5" xml:id="m5">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n23" dur="4" oct="5" pname="a" accid.ges="f" />
+                  <note xml:id="n24" dur="4" oct="5" pname="b" accid.ges="f" />
+                  <note xml:id="n25" dur="4" oct="6" pname="c" />
+                  <note xml:id="n26" dur="4" oct="5" pname="e" accid.ges="f" />
+                </layer>
+              </staff>
+              <staff n="2">
+                <layer n="1">
+                  <note xml:id="n27" dur="1" oct="3" pname="a" accid.ges="f" />
+                </layer>
+              </staff>
+              <octave xml:id="oct1" startid="#n23" endid="#n25" dis="8" dis.place="above" staff="1" />
+            </measure>
+            <measure n="6" xml:id="m6">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n28" dur="4" oct="4" pname="e" accid.ges="f" />
+                  <note xml:id="n29" dur="4" oct="5" pname="e" accid.ges="f" />
+                  <note xml:id="n30" dur="2" oct="5" pname="a" accid.ges="f" />
+                </layer>
+              </staff>
+              <staff n="2">
+                <layer n="1">
+                  <note xml:id="n31" dur="2" oct="3" pname="a" accid.ges="f" />
+                  <note xml:id="n32" dur="2" oct="3" pname="e" accid.ges="f" />
+                </layer>
+              </staff>
+              <gliss xml:id="gl1" startid="#n28" endid="#n29" />
+            </measure>
+            <!-- m7-8: Final chord with lv and pedal sustain -->
+            <measure n="7" xml:id="m7">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n33" dur="4" oct="5" pname="e" accid.ges="f" />
+                  <note xml:id="n34" dur="4" oct="5" pname="d" accid.ges="f" />
+                  <note xml:id="n35" dur="4" oct="5" pname="c" />
+                  <note xml:id="n36" dur="4" oct="4" pname="b" accid.ges="f" />
+                </layer>
+              </staff>
+              <staff n="2">
+                <layer n="1">
+                  <note xml:id="n37" dur="2" oct="3" pname="a" accid.ges="f" />
+                  <note xml:id="n38" dur="2" oct="3" pname="e" accid.ges="f" />
+                </layer>
+              </staff>
+              <pedal xml:id="ped5" startid="#n33" dir="down" place="below" staff="2" />
+            </measure>
+            <measure n="8" xml:id="m8" right="end">
+              <staff n="1">
+                <layer n="1">
+                  <chord xml:id="ch3" dur="1" stem.dir="up">
+                    <note xml:id="n39" oct="4" pname="a" accid.ges="f" />
+                    <note xml:id="n40" oct="5" pname="c" />
+                    <note xml:id="n41" oct="5" pname="e" accid.ges="f" />
                   </chord>
                 </layer>
               </staff>
-              <gliss xml:id="gl1" startid="#n12" endid="#n13" />
-              <lv xml:id="lv1" startid="#n14" />
-              <pedal xml:id="ped2" startid="#n14" dir="up" place="below" staff="2" />
+              <staff n="2">
+                <layer n="1">
+                  <chord xml:id="ch4" dur="1">
+                    <note xml:id="n42" oct="2" pname="a" accid.ges="f" />
+                    <note xml:id="n43" oct="3" pname="a" accid.ges="f" />
+                  </chord>
+                </layer>
+              </staff>
+              <arpeg xml:id="arp3" startid="#ch3" />
+              <lv xml:id="lv1" startid="#ch3" />
+              <pedal xml:id="ped6" startid="#ch3" dir="up" place="below" staff="2" />
             </measure>
           </section>
         </score>

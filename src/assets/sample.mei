@@ -4,7 +4,7 @@
   <meiHead>
     <fileDesc>
       <titleStmt>
-        <title>Sample MEI Document</title>
+        <title>Basic Notation</title>
       </titleStmt>
       <pubStmt />
     </fileDesc>
@@ -19,30 +19,96 @@
             </staffGrp>
           </scoreDef>
           <section>
+            <!-- Anacrusis (pickup measure) -->
+            <measure n="0" xml:id="m0" metcon="false">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n1" dur="4" oct="4" pname="g" />
+                </layer>
+              </staff>
+            </measure>
+            <!-- Antecedent phrase (m1-4): ends on half cadence -->
             <measure n="1" xml:id="m1">
               <staff n="1">
                 <layer n="1">
-                  <note xml:id="n1" dur="4" oct="4" pname="c" />
-                  <note xml:id="n2" dur="4" oct="4" pname="d" />
-                  <note xml:id="n3" dur="4" oct="4" pname="e" />
-                  <note xml:id="n4" dur="4" oct="4" pname="f" />
+                  <note xml:id="n2" dur="4" oct="5" pname="c" />
+                  <note xml:id="n3" dur="4" oct="4" pname="b" />
+                  <note xml:id="n4" dur="4" oct="4" pname="a" />
+                  <note xml:id="n5" dur="4" oct="4" pname="g" />
                 </layer>
               </staff>
             </measure>
             <measure n="2" xml:id="m2">
               <staff n="1">
                 <layer n="1">
-                  <note xml:id="n5" dur="4" oct="4" pname="g" />
                   <note xml:id="n6" dur="4" oct="4" pname="a" />
-                  <note xml:id="n7" dur="4" oct="4" pname="b" />
-                  <note xml:id="n8" dur="4" oct="5" pname="c" />
+                  <beam>
+                    <note xml:id="n7" dur="8" oct="4" pname="b" />
+                    <note xml:id="n8" dur="8" oct="5" pname="c" />
+                  </beam>
+                  <note xml:id="n9" dur="2" oct="4" pname="a" />
                 </layer>
               </staff>
             </measure>
-            <measure n="3" xml:id="m3" right="end">
+            <measure n="3" xml:id="m3">
               <staff n="1">
                 <layer n="1">
-                  <note xml:id="n9" dur="1" oct="5" pname="c" />
+                  <note xml:id="n10" dur="4" oct="4" pname="f" />
+                  <note xml:id="n11" dur="4" oct="4" pname="e" />
+                  <beam>
+                    <note xml:id="n12" dur="8" oct="4" pname="f" />
+                    <note xml:id="n13" dur="8" oct="4" pname="g" />
+                  </beam>
+                  <note xml:id="n14" dur="4" oct="4" pname="a" />
+                </layer>
+              </staff>
+            </measure>
+            <measure n="4" xml:id="m4">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n15" dur="2" oct="4" pname="g" />
+                  <rest xml:id="r1" dur="4" />
+                  <note xml:id="n16" dur="4" oct="4" pname="g" />
+                </layer>
+              </staff>
+            </measure>
+            <!-- Consequent phrase (m5-8): ends on authentic cadence -->
+            <measure n="5" xml:id="m5">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n17" dur="4" oct="5" pname="c" />
+                  <note xml:id="n18" dur="4" oct="4" pname="b" />
+                  <note xml:id="n19" dur="4" oct="4" pname="a" />
+                  <note xml:id="n20" dur="4" oct="4" pname="g" />
+                </layer>
+              </staff>
+            </measure>
+            <measure n="6" xml:id="m6">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n21" dur="4" oct="4" pname="a" />
+                  <beam>
+                    <note xml:id="n22" dur="8" oct="4" pname="b" />
+                    <note xml:id="n23" dur="8" oct="5" pname="c" />
+                  </beam>
+                  <note xml:id="n24" dur="2" oct="5" pname="d" />
+                </layer>
+              </staff>
+            </measure>
+            <measure n="7" xml:id="m7">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n25" dur="4" oct="5" pname="e" />
+                  <note xml:id="n26" dur="4" oct="5" pname="d" />
+                  <note xml:id="n27" dur="4" dots="1" oct="5" pname="c" />
+                  <note xml:id="n28" dur="8" oct="4" pname="b" />
+                </layer>
+              </staff>
+            </measure>
+            <measure n="8" xml:id="m8" right="end">
+              <staff n="1">
+                <layer n="1">
+                  <note xml:id="n29" dur="1" oct="5" pname="c" />
                 </layer>
               </staff>
             </measure>
