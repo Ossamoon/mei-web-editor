@@ -23,5 +23,5 @@ export const examples: ExampleEntry[] = [
   { name: "Dynamics & Expression", fileName: "example-dynamics.mei", content: dynamicsMei },
   { name: "Piano Techniques", fileName: "example-piano-techniques.mei", content: pianoTechMei },
   { name: "Repeats & Structure", fileName: "example-repeats.mei", content: repeatsMei },
-  { name: "Tremolo, Harmony & Special", fileName: "example-special.mei", content: specialMei },
+  { name: "Tremolo & Harmony", fileName: "example-special.mei", content: specialMei },
 ];

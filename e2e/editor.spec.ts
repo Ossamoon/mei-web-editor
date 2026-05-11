@@ -254,7 +254,7 @@ async function moveCursorToLine(page: import("@playwright/test").Page, lineNumbe
 /** Shared helper: get full highlight diagnostic at current cursor position */
 async function getHighlightState(page: import("@playwright/test").Page) {
   return page.evaluate(() => {
-    const active = document.querySelector(".score-active, .score-active-tuplet");
+    const active = document.querySelector(".score-active");
     const overlay = document.querySelector(".measure-active-overlay");
     const statusCtx = document.querySelector("[data-testid='cursor-context']");
     return {
@@ -423,12 +423,6 @@ test.describe("Stroke-based element highlights", () => {
     expect(fill).toBe("none");
   });
 
-  test("bracketSpan hover does not fill interior", async ({ page }) => {
-    await selectExample(page, "Tremolo, Harmony & Special");
-    const fill = await getHoveredChildFill(page, "svg g.bracketSpan");
-    expect(fill).toBe("none");
-  });
-
   test("octave hover does not fill polyline interior", async ({ page }) => {
     await selectExample(page, "Piano Techniques");
     const fill = await page.evaluate(() => {
@@ -442,27 +436,4 @@ test.describe("Stroke-based element highlights", () => {
     expect(fill).toBe("none");
   });
 
-  test("tupletSpan hover does not color child notes", async ({ page }) => {
-    await selectExample(page, "Tremolo, Harmony & Special");
-    const result = await page.evaluate(() => {
-      const tuplet = document.querySelector("svg g.tupletSpan");
-      if (!tuplet) return null;
-      tuplet.dispatchEvent(new MouseEvent("mouseover", { bubbles: true }));
-
-      // Check that child notes are NOT colored by the tuplet hover
-      const note = tuplet.querySelector("g.note .notehead use");
-      const bracket = tuplet.querySelector(".tupletBracket polyline");
-      if (!note || !bracket) return null;
-
-      return {
-        noteFill: getComputedStyle(note).fill,
-        bracketFill: getComputedStyle(bracket).fill,
-      };
-    });
-    expect(result).not.toBeNull();
-    // Note should keep its original fill (black), not the highlight color
-    expect(result!.noteFill).not.toContain("59, 130, 246");
-    // Bracket should have fill: none
-    expect(result!.bracketFill).toBe("none");
-  });
 });

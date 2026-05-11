@@ -25,7 +25,7 @@ Each file is located in `src/assets/` and serves a dual purpose:
 | 6 | Dynamics & Expression | `example-dynamics.mei` | D minor · 4/4 | 8 | `tempo`, `dynam`, `hairpin`, `tie`, `phrase`, `breath`, `caesura`, `dir` |
 | 7 | Piano Techniques | `example-piano-techniques.mei` | A♭ major · 4/4 | 8 | `arpeg`, `fing`, `mordent`, `pedal`, `octave`, `gliss`, `lv` |
 | 8 | Repeats & Structure | `example-repeats.mei` | C major · 4/4 | 16 | `reh`, `repeatMark`, `mRpt`, `mRest`, `beatRpt`, `halfmRpt` |
-| 9 | Tremolo, Harmony & Special | `example-special.mei` | C major · 4/4 | 8 | `bTrem`, `fTrem`, `harm`, `tupletSpan`, `beamSpan`, `bracketSpan`, `bend`, `harpPedal` |
+| 9 | Tremolo, Harmony & Special | `example-special.mei` | C major · 4/4 | 8 | `bTrem`, `fTrem`, `harm`, `tupletSpan`, `beamSpan`, `bracketSpan`, `bend` |
 
 ---
 
@@ -240,7 +240,7 @@ Final syllable:          <syl wordpos="t">-ing</syl>
 |---|---|
 | m1–2 | `bTrem` (notated tremolo on a single note), `harm` (chord symbol), `ornam` |
 | m3–4 | `fTrem` (fingered/alternating tremolo between two notes), `harm` |
-| m5–6 | `tupletSpan` (triplet: 3 eighth notes in the time of 2), `harpPedal`, `harm` |
+| m5–6 | `tupletSpan` (triplet: 3 eighth notes in the time of 2), `harm` |
 | m6 | `beamSpan` (explicit beam grouping via control element) |
 | m7 | `bend`, `bracketSpan`, `harm` |
 | m8 | `harm` |
@@ -252,8 +252,6 @@ Final syllable:          <syl wordpos="t">-ing</syl>
 - **`bTrem`** wraps a single note — it denotes a tremolo ornament on that note (rapid repetition).
 
 - **`fTrem`** wraps two notes — it denotes alternation between the two pitches.
-
-- **`harpPedal`** uses letter attributes (`c`, `d`, `e`, `f`, `g`, `a`, `b`) with values `n` (natural), `s` (sharp), or `f` (flat) to encode harp pedal settings.
 
 - **`bracketSpan`** draws an analytical bracket above a group of notes.
 
@@ -304,7 +302,6 @@ The table below shows which example file is the **primary source** for each CSS 
 | `beamSpan` | 9 Special |
 | `bracketSpan` | 9 Special |
 | `bend` | 9 Special |
-| `harpPedal` | 9 Special |
 
 ---
 

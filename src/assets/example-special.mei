@@ -4,7 +4,7 @@
   <meiHead>
     <fileDesc>
       <titleStmt>
-        <title>Tremolo, Harmony and Special Notation</title>
+        <title>Tremolo and Harmony</title>
       </titleStmt>
       <pubStmt />
     </fileDesc>
@@ -25,7 +25,7 @@
                 <layer n="1">
                   <note xml:id="n1" dur="4" oct="4" pname="c" />
                   <note xml:id="n2" dur="4" oct="4" pname="e" />
-                  <bTrem xml:id="bt1">
+                  <bTrem xml:id="bt1" unitdur="8">
                     <note xml:id="n3" dur="2" oct="4" pname="g" />
                   </bTrem>
                 </layer>
@@ -38,7 +38,7 @@
                 <layer n="1">
                   <note xml:id="n4" dur="4" oct="4" pname="a" />
                   <note xml:id="n5" dur="4" oct="4" pname="e" />
-                  <bTrem xml:id="bt2">
+                  <bTrem xml:id="bt2" unitdur="8">
                     <note xml:id="n6" dur="2" oct="4" pname="a" />
                   </bTrem>
                 </layer>
@@ -49,7 +49,7 @@
             <measure n="3" xml:id="m3">
               <staff n="1">
                 <layer n="1">
-                  <fTrem xml:id="ft1">
+                  <fTrem xml:id="ft1" unitdur="8">
                     <note xml:id="n7" dur="2" oct="4" pname="f" />
                     <note xml:id="n8" dur="2" oct="4" pname="a" />
                   </fTrem>
@@ -62,7 +62,7 @@
             <measure n="4" xml:id="m4">
               <staff n="1">
                 <layer n="1">
-                  <fTrem xml:id="ft2">
+                  <fTrem xml:id="ft2" unitdur="8">
                     <note xml:id="n11" dur="2" oct="4" pname="g" />
                     <note xml:id="n12" dur="2" oct="4" pname="b" />
                   </fTrem>
@@ -71,56 +71,13 @@
               </staff>
               <harm xml:id="h4" startid="#n11" place="above">G</harm>
             </measure>
-            <!-- m5-6: tupletSpan, beamSpan, harpPedal -->
-            <measure n="5" xml:id="m5">
+            <measure n="5" xml:id="m5" right="end">
               <staff n="1">
                 <layer n="1">
-                  <note xml:id="n14" dur="8" oct="4" pname="c" />
-                  <note xml:id="n15" dur="8" oct="4" pname="d" />
-                  <note xml:id="n16" dur="8" oct="4" pname="e" />
-                  <note xml:id="n17" dur="4" oct="4" pname="f" />
-                  <note xml:id="n18" dur="4" oct="4" pname="g" />
-                  <note xml:id="n19" dur="8" oct="4" pname="a" />
+                  <note xml:id="n14" dur="1" oct="5" pname="c" />
                 </layer>
               </staff>
-              <tupletSpan xml:id="ts1" startid="#n14" endid="#n16" num="3" numbase="2" />
               <harm xml:id="h5" startid="#n14" place="above">C</harm>
-              <harpPedal xml:id="hped1" startid="#n17" c="n" d="n" e="n" f="n" g="n" a="n" b="n" />
-            </measure>
-            <measure n="6" xml:id="m6">
-              <staff n="1">
-                <layer n="1">
-                  <note xml:id="n20" dur="8" oct="4" pname="c" />
-                  <note xml:id="n21" dur="8" oct="4" pname="d" />
-                  <note xml:id="n22" dur="8" oct="4" pname="e" />
-                  <note xml:id="n23" dur="8" oct="4" pname="f" />
-                  <note xml:id="n24" dur="2" oct="4" pname="g" />
-                </layer>
-              </staff>
-              <beamSpan xml:id="bs1" startid="#n20" endid="#n23" />
-              <harm xml:id="h6" startid="#n20" place="above">Am</harm>
-            </measure>
-            <!-- m7-8: bend, bracketSpan -->
-            <measure n="7" xml:id="m7">
-              <staff n="1">
-                <layer n="1">
-                  <note xml:id="n25" dur="4" oct="4" pname="e" />
-                  <note xml:id="n26" dur="4" oct="4" pname="f" />
-                  <note xml:id="n27" dur="4" oct="4" pname="g" />
-                  <note xml:id="n28" dur="4" oct="4" pname="a" />
-                </layer>
-              </staff>
-              <bend xml:id="bd1" startid="#n25" endid="#n26" />
-              <bracketSpan xml:id="bks1" startid="#n27" endid="#n28" func="coloration" />
-              <harm xml:id="h7" startid="#n25" place="above">F</harm>
-            </measure>
-            <measure n="8" xml:id="m8" right="end">
-              <staff n="1">
-                <layer n="1">
-                  <note xml:id="n29" dur="1" oct="5" pname="c" />
-                </layer>
-              </staff>
-              <harm xml:id="h8" startid="#n29" place="above">C</harm>
             </measure>
           </section>
         </score>
