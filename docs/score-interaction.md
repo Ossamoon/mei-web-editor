@@ -9,7 +9,7 @@ All hoverable/clickable elements are listed in `INTERACTIVE_CLASSES`. Each entry
 | Category | Classes |
 |----------|---------|
 | Notes & rests | `note`, `chord`, `rest`, `mRest`, `beatRpt`, `halfmRpt`, `mRpt` |
-| Structure | `measure` |
+| Structure | `measure`, `clef` |
 | Ornaments | `trill`, `mordent`, `turn`, `ornam` |
 | Articulation & expression | `fermata`, `arpeg`, `breath`, `caesura` |
 | Lines & curves | `slur`, `tie`, `phrase`, `gliss`, `hairpin`, `lv` |
@@ -112,7 +112,15 @@ Both hover and active highlights use the same blue hue (Tailwind blue-500: `rgb(
 
 `ScorePreview` is wrapped in `React.memo`. This is critical because highlights (`score-active`, `score-hover`, overlay rects) are applied by directly manipulating the SVG DOM via `classList` and `insertBefore`. If the component re-renders, `dangerouslySetInnerHTML` reconstructs the entire SVG DOM, destroying these manual modifications. When `highlightedId` has not changed (e.g. cursor moves within the same measure), the `useEffect` does not re-fire, so the highlight is lost permanently.
 
-`React.memo` ensures re-renders only happen when props actually change (`svgContent`, `hasError`, `highlightedId`, `onNoteClick`).
+`React.memo` ensures re-renders only happen when props actually change (`svgContent`, `hasError`, `highlightedId`, `onNoteClick`, `validXmlIds`).
+
+## Valid ID filtering
+
+`ScorePreview` receives a `validXmlIds: Set<string>` prop containing all `xml:id` values extracted from the MEI source via `getAllXmlIds()` in `findXmlId.ts`. The `findNoteElement` function checks `validIds.has(el.id)` instead of just `el.id`, ensuring only elements with explicit `xml:id` in the MEI source are interactive.
+
+This filtering is necessary because Verovio auto-generates random IDs for all SVG elements, including those derived from shorthand attributes (e.g., `<staffDef clef.shape="G">` produces `<g id="nh5rcn6" class="clef">`). Without filtering, these elements would receive hover highlights but clicking them would do nothing (since the auto-generated ID has no corresponding `xml:id` in the MEI source).
+
+The `validXmlIds` Set is stored in a `useRef` inside `ScorePreview` so that the `handleMouseOver` callback (which has `[]` deps and is never re-created) can always access the latest value.
 
 ## Adding a new interactive element
 

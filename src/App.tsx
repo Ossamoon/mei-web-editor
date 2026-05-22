@@ -10,7 +10,7 @@ import { useVerovio } from "./hooks/useVerovio";
 import { useKeyboardShortcut } from "./hooks/useKeyboardShortcut";
 import { useDragAndDrop } from "./hooks/useDragAndDrop";
 import { validateXml, type XmlError } from "./utils/validate";
-import { findXmlIdAtCursor } from "./utils/findXmlId";
+import { findXmlIdAtCursor, getAllXmlIds } from "./utils/findXmlId";
 import { findElementAtCursor, type CursorContext } from "./utils/findElement";
 import { examples } from "./examples";
 
@@ -25,6 +25,8 @@ function App() {
   const [highlightedNoteId, setHighlightedNoteId] = useState<string | null>(null);
   const [cursorContext, setCursorContext] = useState<CursorContext | null>(null);
   const { isReady, renderMei } = useVerovio();
+
+  const validXmlIds = useMemo(() => getAllXmlIds(meiContent), [meiContent]);
 
   const editorContainerRef = useRef<HTMLDivElement>(null);
   const scoreContainerRef = useRef<HTMLDivElement>(null);
@@ -175,6 +177,7 @@ function App() {
                 hasError={errors.length > 0}
                 highlightedId={highlightedNoteId}
                 onNoteClick={handleNoteClick}
+                validXmlIds={validXmlIds}
               />
             </div>
           </Allotment.Pane>

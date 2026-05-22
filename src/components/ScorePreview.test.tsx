@@ -18,6 +18,7 @@ describe("ScorePreview", () => {
     hasError: false,
     highlightedId: null,
     onNoteClick: vi.fn(),
+    validXmlIds: new Set(["note-n1", "note-n2", "m1"]),
   };
 
   beforeEach(() => {
@@ -118,5 +119,70 @@ describe("ScorePreview", () => {
     render(<ScorePreview {...defaultProps} svgContent={null} />);
     const svgElement = document.querySelector("svg");
     expect(svgElement).toBeNull();
+  });
+
+  it("does not hover elements not in validXmlIds", () => {
+    // sys1 has an id but is not in validXmlIds (and "system" is not interactive anyway)
+    // Use a clef element with auto-generated id not in validXmlIds
+    const svgWithAutoId = `
+      <svg>
+        <g id="auto-clef-123" class="clef"><use href="#glyph" /></g>
+        <g id="note-n1" class="note"><rect width="10" height="10" /></g>
+      </svg>
+    `;
+    render(
+      <ScorePreview
+        {...defaultProps}
+        svgContent={svgWithAutoId}
+        validXmlIds={new Set(["note-n1"])}
+      />,
+    );
+    const autoClef = document.getElementById("auto-clef-123");
+    expect(autoClef).toBeTruthy();
+
+    fireEvent.mouseOver(autoClef!);
+    expect(autoClef!.classList.contains("score-hover")).toBe(false);
+  });
+
+  it("does not call onNoteClick for elements not in validXmlIds", () => {
+    const svgWithAutoId = `
+      <svg>
+        <g id="auto-note-999" class="note"><rect width="10" height="10" /></g>
+      </svg>
+    `;
+    const onNoteClick = vi.fn();
+    render(
+      <ScorePreview
+        {...defaultProps}
+        svgContent={svgWithAutoId}
+        onNoteClick={onNoteClick}
+        validXmlIds={new Set()}
+      />,
+    );
+    const autoNote = document.getElementById("auto-note-999");
+    expect(autoNote).toBeTruthy();
+
+    fireEvent.click(autoNote!);
+    expect(onNoteClick).not.toHaveBeenCalled();
+  });
+
+  it("hovers elements that are in validXmlIds", () => {
+    const svgWithClef = `
+      <svg>
+        <g id="clef1" class="clef"><use href="#glyph" /></g>
+      </svg>
+    `;
+    render(
+      <ScorePreview
+        {...defaultProps}
+        svgContent={svgWithClef}
+        validXmlIds={new Set(["clef1"])}
+      />,
+    );
+    const clef = document.getElementById("clef1");
+    expect(clef).toBeTruthy();
+
+    fireEvent.mouseOver(clef!);
+    expect(clef!.classList.contains("score-hover")).toBe(true);
   });
 });

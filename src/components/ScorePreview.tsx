@@ -5,6 +5,7 @@ interface ScorePreviewProps {
   hasError: boolean;
   highlightedId: string | null;
   onNoteClick: (xmlId: string) => void;
+  validXmlIds: Set<string>;
 }
 
 // Verovio CSS classes that represent clickable/hoverable musical elements
@@ -12,7 +13,7 @@ const INTERACTIVE_CLASSES = new Set([
   // Notes & rests
   "note", "chord", "rest", "mRest", "beatRpt", "halfmRpt", "mRpt",
   // Structure
-  "measure",
+  "measure", "clef",
   // Ornaments
   "trill", "mordent", "turn", "ornam",
   // Articulation & expression
@@ -33,9 +34,9 @@ const INTERACTIVE_CLASSES = new Set([
   "bTrem", "fTrem",
 ]);
 
-function findNoteElement(el: Element | null, container: Element | null): Element | null {
+function findNoteElement(el: Element | null, container: Element | null, validIds: Set<string>): Element | null {
   while (el && el !== container) {
-    if (el.id) {
+    if (el.id && validIds.has(el.id)) {
       const classes = el.getAttribute("class")?.split(" ") ?? [];
       if (classes.some((c) => INTERACTIVE_CLASSES.has(c))) {
         return el;
@@ -125,13 +126,16 @@ export const ScorePreview = memo(function ScorePreview({
   hasError,
   highlightedId,
   onNoteClick,
+  validXmlIds,
 }: ScorePreviewProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const hoveredRef = useRef<Element | null>(null);
+  const validIdsRef = useRef<Set<string>>(validXmlIds);
+  validIdsRef.current = validXmlIds;
 
   const handleClick = useCallback(
     (e: MouseEvent) => {
-      const el = findNoteElement(e.target as Element, containerRef.current);
+      const el = findNoteElement(e.target as Element, containerRef.current, validIdsRef.current);
       if (el) onNoteClick(el.id);
     },
     [onNoteClick],
@@ -141,7 +145,7 @@ export const ScorePreview = memo(function ScorePreview({
     const container = containerRef.current;
     if (!container) return;
 
-    const el = findNoteElement(e.target as Element, container);
+    const el = findNoteElement(e.target as Element, container, validIdsRef.current);
 
     if (hoveredRef.current && hoveredRef.current !== el) {
       hoveredRef.current.classList.remove("score-hover");
@@ -219,7 +223,7 @@ export const ScorePreview = memo(function ScorePreview({
     <div className="relative h-full w-full overflow-auto bg-white">
       <style>{`
         .note, .chord, .rest, .mRest, .beatRpt, .halfmRpt, .mRpt,
-        .measure,
+        .measure, .clef,
         .trill, .mordent, .turn, .ornam,
         .fermata, .arpeg, .breath, .caesura,
         .slur, .tie, .phrase, .gliss, .hairpin, .lv,

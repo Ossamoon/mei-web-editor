@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { findXmlIdAtCursor } from "./findXmlId";
+import { findXmlIdAtCursor, getAllXmlIds } from "./findXmlId";
 
 const sampleMei = `<mei>
   <music>
@@ -155,5 +155,33 @@ describe("findXmlIdAtCursor", () => {
     expect(findXmlIdAtCursor(sampleMei, 6)).toBeNull();
     // Line 3 is <body>
     expect(findXmlIdAtCursor(sampleMei, 3)).toBeNull();
+  });
+});
+
+describe("getAllXmlIds", () => {
+  it("returns all xml:id values from MEI content", () => {
+    const ids = getAllXmlIds(sampleMei);
+    expect(ids).toEqual(new Set(["m1", "n1", "n2"]));
+  });
+
+  it("returns empty set for content with no xml:id", () => {
+    const xml = `<root>
+  <child>
+    <grandchild />
+  </child>
+</root>`;
+    expect(getAllXmlIds(xml)).toEqual(new Set());
+  });
+
+  it("returns empty set for empty string", () => {
+    expect(getAllXmlIds("")).toEqual(new Set());
+  });
+
+  it("shares cache with findXmlIdAtCursor", () => {
+    // Calling findXmlIdAtCursor first populates the cache
+    findXmlIdAtCursor(sampleMei, 10);
+    // getAllXmlIds should return correct results from the same cache
+    const ids = getAllXmlIds(sampleMei);
+    expect(ids).toEqual(new Set(["m1", "n1", "n2"]));
   });
 });
