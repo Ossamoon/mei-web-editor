@@ -1,6 +1,6 @@
 import { useEffect, useRef, useCallback } from "react";
 import { EditorState } from "@codemirror/state";
-import { EditorView, keymap, lineNumbers } from "@codemirror/view";
+import { EditorView, keymap, lineNumbers, highlightActiveLine } from "@codemirror/view";
 import { defaultKeymap, history, historyKeymap } from "@codemirror/commands";
 import {
   syntaxHighlighting,
@@ -24,11 +24,13 @@ export function MeiEditor({ value, onChange, errors, onCursorChange }: MeiEditor
   const containerRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<EditorView | null>(null);
   const onChangeRef = useRef(onChange);
-  onChangeRef.current = onChange;
   const errorsRef = useRef(errors);
-  errorsRef.current = errors;
   const onCursorChangeRef = useRef(onCursorChange);
-  onCursorChangeRef.current = onCursorChange;
+  useEffect(() => {
+    onChangeRef.current = onChange;
+    errorsRef.current = errors;
+    onCursorChangeRef.current = onCursorChange;
+  }, [onChange, errors, onCursorChange]);
 
   const isProgrammaticRef = useRef(false);
 
@@ -60,6 +62,7 @@ export function MeiEditor({ value, onChange, errors, onCursorChange }: MeiEditor
       doc: value,
       extensions: [
         lineNumbers(),
+        highlightActiveLine(),
         foldGutter(),
         bracketMatching(),
         history(),
@@ -81,6 +84,7 @@ export function MeiEditor({ value, onChange, errors, onCursorChange }: MeiEditor
         EditorView.theme({
           "&": { height: "100%" },
           ".cm-scroller": { overflow: "auto" },
+          ".cm-activeLine": { backgroundColor: "rgba(0, 0, 0, 0.04)" },
         }),
       ],
     });

@@ -32,7 +32,9 @@ function App() {
   const scoreContainerRef = useRef<HTMLDivElement>(null);
   const debounceTimerRef = useRef<ReturnType<typeof setTimeout>>(null);
   const latestContentRef = useRef(meiContent);
-  latestContentRef.current = meiContent;
+  useEffect(() => {
+    latestContentRef.current = meiContent;
+  }, [meiContent]);
 
   // Render MEI to SVG
   const doRender = useCallback(() => {
